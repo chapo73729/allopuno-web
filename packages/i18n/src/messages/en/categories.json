@@ -1,0 +1,113 @@
+{
+  "indexTitle": "Services",
+  "indexSubtitle": "Find the right professional for any job — or post a request and let them come to you.",
+  "prosInCategory": "Professionals: {category}",
+  "requestsInCategory": "Latest requests",
+  "publishInCategory": "Need {category}? Post a request",
+  "faqTitle": "Frequently asked questions",
+  "emptyPros": "We are currently looking for professionals in this category.",
+  "emptyProsNotify": "Notify me when someone joins the area",
+  "subcategories": "Subcategories",
+  "relatedCategories": "Related categories",
+  "rentalTitle": "Rental categories",
+  "faq": {
+    "ndertim": [
+      {
+        "q": "How much does an electrician or plumber cost in Kosovo?",
+        "a": "As an estimate, a small call-out (a socket, lighting, a leak, a trap) usually costs around 15–40 €, while a full electrical installation of a flat is often around 8–12 € per m². The exact price depends on the job — compare a few offers before you decide."
+      },
+      {
+        "q": "How much does it cost to paint a flat?",
+        "a": "Painting is usually priced per m²: as an estimate, around 2–4 € per m² for paint only, or 4–6 € per m² with skim coating. For a 70–90 m² flat this often comes to around 150–350 €, depending on the state of the walls and who supplies the materials."
+      },
+      {
+        "q": "How do I find a reliable tradesperson?",
+        "a": "Post your request with details (what, where, when) and compare offers: look at reviews from previous clients, profile verifications and jobs done. Ask for a clear price before work starts, and never pay in advance without a clear agreement."
+      }
+    ],
+    "shtepia": [
+      {
+        "q": "How much does cleaning a flat cost?",
+        "a": "As an estimate, a standard flat cleaning often costs around 20–50 €, while a deep clean (after renovation or before moving in) can run 50–120 €, depending on the size and condition."
+      },
+      {
+        "q": "How much does furniture assembly cost?",
+        "a": "Assembling a single piece (wardrobe, bed, desk) often costs around 10–25 €, while a full room is around 25–60 €. Mention in your request how many pieces there are and whether the pro should bring their own tools."
+      },
+      {
+        "q": "How much does a move within the city cost?",
+        "a": "As an estimate, moving a one-bedroom flat within the city with a van and two workers often costs around 40–80 €. A floor without a lift, longer distances and large furniture raise the price — describe these in your request."
+      }
+    ],
+    "automjete": [
+      {
+        "q": "How much does computer diagnostics for a car cost?",
+        "a": "As an estimate, computer diagnostics often costs around 10–20 €. Some workshops deduct it from the price if you have the repair done there — ask about this in the offer."
+      },
+      {
+        "q": "How much does tyre fitting and balancing cost?",
+        "a": "Fitting and balancing four tyres usually costs around 10–20 €, depending on the size. In the changeover seasons (October–November and March–April) book early, as tyre shops fill up."
+      },
+      {
+        "q": "My car won't start — will the mechanic come to me?",
+        "a": "Yes, some mechanics offer call-outs, and there are also towing services to get the car to a workshop. Include your location and the symptoms in the request (e.g. won't start, warning light, strange noise) so offers are accurate."
+      }
+    ],
+    "transport": [
+      {
+        "q": "How much does a van transport within the city cost?",
+        "a": "As an estimate, a small transport (a few boxes, one piece of furniture) often costs around 15–40 €, while a full move with workers is around 40–80 €. The price depends on volume, floor and distance."
+      },
+      {
+        "q": "What should I include in a transport request?",
+        "a": "The more detail, the more accurate the offers: what you are transporting (boxes, furniture, equipment), from where to where, the floor and whether there is a lift, the preferred date and whether you need workers for loading."
+      },
+      {
+        "q": "Do transporters also drive between cities?",
+        "a": "Yes — most transporters cover all of Kosovo. As an estimate, a transport between two cities (e.g. Prishtina–Ferizaj) often starts from around 30–50 €, depending on the distance and the load."
+      }
+    ],
+    "digjitale": [
+      {
+        "q": "How much does a phone screen replacement cost?",
+        "a": "As an estimate, a screen replacement often costs around 25–120 €, depending on the model and the screen quality (original or aftermarket). Most repairs are done the same day."
+      },
+      {
+        "q": "How much does a simple website cost?",
+        "a": "As an estimate, a simple presentation site often starts from around 150–500 €, while online shops and more complex projects cost considerably more. Describe clearly what you need (pages, languages, content) and compare a few offers."
+      },
+      {
+        "q": "Is there a warranty on phone and computer repairs?",
+        "a": "Many repair shops offer a warranty on replaced parts, often 3–6 months. Always ask before work starts what the warranty covers, and get it confirmed in writing in the chat."
+      }
+    ],
+    "personale": [
+      {
+        "q": "How much does an hour of private tutoring cost?",
+        "a": "As an estimate, an hour of private tutoring often costs around 5–15 €, depending on the subject and level — matura or university preparation is usually at the upper end of that range."
+      },
+      {
+        "q": "How do I choose a trustworthy babysitter?",
+        "a": "Look at profile verifications and reviews from other parents, and arrange an introductory meeting before deciding. Agree clearly on hours, duties and price — and start with a short trial period."
+      },
+      {
+        "q": "Can lessons be held online?",
+        "a": "Yes — many tutors offer lessons online or at your home. Note your preference in the request along with the subject, the level and how many hours per week you need."
+      }
+    ],
+    "evente": [
+      {
+        "q": "How much does a wedding photographer cost in Kosovo?",
+        "a": "As an estimate, a photographer for a full wedding day often costs around 300–600 €, depending on experience and the package. Photo and video together cost more — ask what the package includes (hours, edited photos, delivery time)."
+      },
+      {
+        "q": "How far in advance should I book a DJ or photographer?",
+        "a": "For summer-season weddings, booking 3–6 months ahead is advisable, as good dates go early. For birthdays and smaller parties a few weeks is often enough."
+      },
+      {
+        "q": "What should an event request include?",
+        "a": "The date and venue, the number of guests, how many hours of service you need and the style you are after (e.g. natural photos, live music or a DJ). The clearer the description, the more comparable the offers you receive."
+      }
+    ]
+  }
+}

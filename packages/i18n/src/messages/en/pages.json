@@ -1,0 +1,121 @@
+{
+  "about": {
+    "title": "About us",
+    "intro": "AlloPuno is Kosovo's local marketplace for services and rentals: describe what you need and the people who can do it come to you.",
+    "mission": {
+      "title": "Mission",
+      "text": "Make finding a trustworthy tradesperson in Kosovo as easy as asking your neighbour — no endless phone calls, no guessing and no wasted time."
+    },
+    "vision": {
+      "title": "Vision",
+      "text": "A marketplace where every good professional earns work through their own reviews and every family finds fast, fair help — in every city of Kosovo."
+    },
+    "values": {
+      "title": "Values",
+      "text": "Trust above everything: real verifications, reviews that cannot be bought and a ranking that never secretly favours anyone. Free for clients — always."
+    }
+  },
+  "help": {
+    "title": "Help center",
+    "intro": "The most frequent questions about AlloPuno. Didn't find your answer? Write to us.",
+    "faq": [
+      {
+        "q": "How does AlloPuno work?",
+        "a": "Describe what you need in your own words, we work out the category and your request reaches professionals near you. They contact you with offers and you choose who to work with."
+      },
+      {
+        "q": "Is it really free?",
+        "a": "Yes. Posting requests, contacting professionals and using the platform are 100% free for clients. There are no hidden fees."
+      },
+      {
+        "q": "How are professionals verified?",
+        "a": "Every professional verifies their phone number. Extra badges — email, identity, business — show the further verification steps a profile has completed."
+      },
+      {
+        "q": "How do reviews work?",
+        "a": "Only clients who had real contact with a professional can leave a review. Reviews are not deleted and cannot be bought — the ranking never secretly favours anyone."
+      },
+      {
+        "q": "How do I stay safe?",
+        "a": "Agree clearly on price and timing before work starts, ask for an invoice on bigger jobs and report any suspicious profile. Our team reviews reports with priority."
+      },
+      {
+        "q": "How can I contact you?",
+        "a": "Write to us on the contact page or by email — we reply within 1–2 working days."
+      }
+    ],
+    "contactCta": "Write to us"
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "Write to us with any question, suggestion or problem.",
+    "emailLabel": "Write to us directly by email",
+    "email": "info@allopuno.com",
+    "form": {
+      "title": "Or send us a message here",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send message",
+      "thanksTitle": "Thank you!",
+      "thanksText": "Demo version — the form doesn't send messages yet. Until then, write to us directly by email."
+    }
+  },
+  "terms": {
+    "title": "Terms of use",
+    "intro": "Working draft — the full terms will be published before launch.",
+    "sections": [
+      {
+        "title": "Your account",
+        "text": "Posting requests or offering services requires an account with a verified phone number. You are responsible for the information you provide and for keeping your account secure. Fake or duplicate accounts may be closed."
+      },
+      {
+        "title": "Content",
+        "text": "Requests, profiles, photos and reviews must be truthful and your own. Misleading, offensive or illegal content is forbidden; we may remove it and restrict the account that posted it."
+      },
+      {
+        "title": "AlloPuno's role",
+        "text": "AlloPuno connects clients with professionals — we are not a party to the agreement between them. Price, timing and quality of work are agreed directly between client and professional."
+      },
+      {
+        "title": "Responsibilities",
+        "text": "Use the platform in good faith: respect your agreements, don't misuse contact details and report suspicious behaviour. We don't guarantee the outcome of jobs, but we work to keep profiles and reviews trustworthy."
+      },
+      {
+        "title": "Contact",
+        "text": "For questions about these terms write to info@allopuno.com. This is a working draft and will be completed before the official launch."
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "intro": "Working draft — the full policy will be published before launch.",
+    "sections": [
+      {
+        "title": "What data we collect",
+        "text": "The data you give us yourself: name, phone number, email (if you add it), city and the content you publish — requests, profiles, photos and reviews."
+      },
+      {
+        "title": "How we use it",
+        "text": "To match requests with the right professionals near you, to keep your account secure and to improve the service. We don't send you advertising without your consent."
+      },
+      {
+        "title": "Who we share it with",
+        "text": "Your public profile and public requests are visible to other users. We do not sell your data to third parties. Technical providers (e.g. hosting) process it only to keep the platform running."
+      },
+      {
+        "title": "Your rights",
+        "text": "You can request access, correction or deletion of your data at any time. When you close your account, personal data is deleted or anonymised within a reasonable period."
+      },
+      {
+        "title": "Contact",
+        "text": "For any privacy question write to info@allopuno.com. This is a working draft and will be refined before the official launch."
+      }
+    ]
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you're looking for doesn't exist or has moved.",
+    "backHome": "Back to home"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "hero": {
+    "title": "Çfarë të duhet?",
+    "subtitle": "Përshkruaje çfarë të duhet — profesionistët dhe personat pranë teje të përgjigjen me oferta.",
+    "searchPlaceholder": "Shkruaj çfarë të duhet...",
+    "publishCta": "Publiko kërkesën",
+    "orBrowse": "ose shfleto kategoritë",
+    "examples": [
+      "Kërkoj elektricist...",
+      "Më duhet një furgon...",
+      "Kërkoj dikë për të lyer banesën...",
+      "Më duhet një mini-eskavator...",
+      "Kërkoj fotograf për dasmë...",
+      "Më duhet një hidraulik nesër..."
+    ]
+  },
+  "trust": {
+    "free": "100% falas",
+    "freeDetail": "Pa pagesë, pa komision",
+    "verified": "Profile të verifikuara",
+    "verifiedDetail": "Telefon, identitet, biznes",
+    "fast": "Përgjigje të shpejta",
+    "fastDetail": "Oferta brenda pak orësh"
+  },
+  "how": {
+    "title": "Si funksionon",
+    "step1Title": "Përshkruaje kërkesën",
+    "step1Text": "Shkruaj lirshëm çfarë të duhet — ne e kuptojmë kategorinë, vendin dhe kohën.",
+    "step2Title": "Merr oferta",
+    "step2Text": "Profesionistët pranë teje njoftohen dhe të dërgojnë çmim e disponueshmëri.",
+    "step3Title": "Krahaso dhe zgjidh",
+    "step3Text": "Krahaso çmimet, vlerësimet dhe distancën — zgjedhja është gjithmonë e jotja."
+  },
+  "sections": {
+    "categories": "Kategoritë kryesore",
+    "nearRequests": "Kërkesa pranë teje",
+    "nearPros": "Profesionistët pranë teje",
+    "topServices": "Shërbimet më të kërkuara",
+    "nearRentals": "Qira pranë teje"
+  },
+  "empty": {
+    "categoryTitle": "Po kërkojmë profesionistë në këtë kategori.",
+    "categoryNotify": "Më njofto kur dikush i bashkohet zonës"
+  },
+  "proCta": {
+    "title": "Ofron shërbime? Puno me ne.",
+    "text": "Regjistrohu falas, cakto kategoritë dhe zonën tënde, dhe merr kërkesa direkt në telefon.",
+    "button": "Fillo si profesionist"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "services": "Shërbimet",
+  "portfolio": "Portofoli",
+  "reviews": "Vlerësimet",
+  "about": "Rreth",
+  "availability": "Disponueshmëria",
+  "indicativePrices": "Çmime orientuese",
+  "coverage": "{city} + {radius} km",
+  "stats": {
+    "jobs": "Punë të kryera",
+    "responseRate": "Norma e përgjigjes",
+    "avgResponse": "Përgjigja mesatare",
+    "minutes": "{minutes} min",
+    "percent": "{rate}%"
+  },
+  "units": {
+    "flat": "{price} €",
+    "perHour": "{price} €/orë",
+    "perJob": "{price} €/punë",
+    "perM2": "{price} €/m²",
+    "perDay": "{price} €/ditë"
+  },
+  "ratingBreakdown": {
+    "quality": "Cilësia",
+    "punctuality": "Përpikëria",
+    "communication": "Komunikimi",
+    "value": "Çmimi/cilësia",
+    "professionalism": "Profesionalizmi"
+  },
+  "sendPrivateRequest": "Dërgo kërkesë private",
+  "askQuote": "Kërko ofertë",
+  "replyFromPro": "Përgjigja e profesionistit",
+  "noReviewsYet": "Ende pa vlerësime — bëhu i pari që lë një vlerësim pas një pune."
+}

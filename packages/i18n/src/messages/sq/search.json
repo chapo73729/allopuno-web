@@ -1,0 +1,37 @@
+{
+  "title": "Kërko",
+  "placeholder": "Shërbim, profesionist, qira...",
+  "tabs": {
+    "pros": "Profesionistë",
+    "requests": "Kërkesa",
+    "rentals": "Qira"
+  },
+  "filters": {
+    "title": "Filtrat",
+    "category": "Kategoria",
+    "allCategories": "Të gjitha kategoritë",
+    "city": "Qyteti",
+    "allCities": "Të gjitha qytetet",
+    "distance": "Distanca",
+    "anyDistance": "Çdo distancë",
+    "rating": "Vlerësimi",
+    "anyRating": "Çdo vlerësim",
+    "verifiedOnly": "Vetëm të verifikuar",
+    "availableNow": "Të disponueshëm tani",
+    "clear": "Pastro filtrat",
+    "apply": "Apliko"
+  },
+  "sort": {
+    "label": "Rendit sipas",
+    "relevance": "Përshtatshmërisë",
+    "distance": "Distancës",
+    "rating": "Vlerësimit",
+    "responseTime": "Kohës së përgjigjes"
+  },
+  "results": {
+    "count": "{count, plural, =0 {Asnjë rezultat} =1 {1 rezultat} other {# rezultate}}",
+    "emptyTitle": "Asnjë rezultat për këtë kërkim",
+    "emptyText": "Provo një fjalë tjetër, zgjero distancën — ose publiko një kërkesë dhe lëri profesionistët të të gjejnë ty.",
+    "emptyCta": "Publiko kërkesën"
+  }
+}

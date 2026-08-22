@@ -1,0 +1,74 @@
+{
+  "brand": {
+    "name": "AlloPuno",
+    "tagline": "What do you need?",
+    "motto": "Ask. Offer. Find. Work."
+  },
+  "nav": {
+    "services": "Services",
+    "rentals": "Rentals",
+    "requests": "Requests",
+    "search": "Search",
+    "publish": "Post a request",
+    "login": "Log in",
+    "register": "Sign up",
+    "becomePro": "Offer your services",
+    "menu": "Menu",
+    "close": "Close",
+    "mainLabel": "Main navigation",
+    "mobileLabel": "Mobile navigation"
+  },
+  "actions": {
+    "seeAll": "See all",
+    "back": "Back",
+    "continue": "Continue",
+    "skip": "Skip",
+    "cancel": "Cancel",
+    "save": "Save",
+    "send": "Send",
+    "respond": "Respond",
+    "contact": "Contact",
+    "share": "Share",
+    "report": "Report",
+    "showMore": "Show more"
+  },
+  "badges": {
+    "phoneVerified": "Phone verified",
+    "emailVerified": "Email verified",
+    "identityVerified": "Identity verified",
+    "businessVerified": "Verified business",
+    "availableNow": "Available now",
+    "urgent": "Urgent",
+    "new": "New",
+    "sponsored": "Sponsored",
+    "free": "Free"
+  },
+  "meta": {
+    "distanceKm": "{km} km",
+    "reviews": "{count, plural, =1 {1 review} other {# reviews}}",
+    "jobsDone": "{count, plural, =1 {1 job completed} other {# jobs completed}}",
+    "responseRate": "{rate}% response rate",
+    "respondsIn": "Replies in ~{minutes} min",
+    "memberSince": "Member since {year}",
+    "perDay": "€{price}/day",
+    "budget": "Budget €{min}–{max}",
+    "noBudget": "Open budget"
+  },
+  "footer": {
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "about": "About us",
+    "help": "Help center",
+    "contact": "Contact",
+    "terms": "Terms of use",
+    "privacy": "Privacy",
+    "freeNote": "AlloPuno is 100% free.",
+    "copyright": "© {year} AlloPuno. All rights reserved."
+  },
+  "language": {
+    "label": "Language",
+    "sq": "Shqip",
+    "en": "English"
+  }
+}

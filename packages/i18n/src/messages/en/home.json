@@ -1,0 +1,50 @@
+{
+  "hero": {
+    "title": "What do you need?",
+    "subtitle": "Describe what you need — professionals and people near you reply with offers.",
+    "searchPlaceholder": "Type what you need...",
+    "publishCta": "Post your request",
+    "orBrowse": "or browse categories",
+    "examples": [
+      "Looking for an electrician...",
+      "I need a van...",
+      "Looking for someone to paint my flat...",
+      "I need a mini excavator...",
+      "Looking for a wedding photographer...",
+      "I need a plumber tomorrow..."
+    ]
+  },
+  "trust": {
+    "free": "100% free",
+    "freeDetail": "No fees, no commission",
+    "verified": "Verified profiles",
+    "verifiedDetail": "Phone, identity, business",
+    "fast": "Fast replies",
+    "fastDetail": "Offers within hours"
+  },
+  "how": {
+    "title": "How it works",
+    "step1Title": "Describe your request",
+    "step1Text": "Write freely what you need — we understand the category, place and time.",
+    "step2Title": "Receive offers",
+    "step2Text": "Professionals near you get notified and send you a price and availability.",
+    "step3Title": "Compare and choose",
+    "step3Text": "Compare prices, ratings and distance — the choice is always yours."
+  },
+  "sections": {
+    "categories": "Main categories",
+    "nearRequests": "Requests near you",
+    "nearPros": "Professionals near you",
+    "topServices": "Most requested services",
+    "nearRentals": "Rentals near you"
+  },
+  "empty": {
+    "categoryTitle": "We are currently looking for professionals in this category.",
+    "categoryNotify": "Notify me when someone joins the area"
+  },
+  "proCta": {
+    "title": "Do you offer services? Work with us.",
+    "text": "Sign up for free, set your categories and area, and receive requests straight to your phone.",
+    "button": "Start as a professional"
+  }
+}

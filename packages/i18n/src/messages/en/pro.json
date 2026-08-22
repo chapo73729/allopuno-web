@@ -1,0 +1,34 @@
+{
+  "services": "Services",
+  "portfolio": "Portfolio",
+  "reviews": "Reviews",
+  "about": "About",
+  "availability": "Availability",
+  "indicativePrices": "Indicative prices",
+  "coverage": "{city} + {radius} km",
+  "stats": {
+    "jobs": "Jobs completed",
+    "responseRate": "Response rate",
+    "avgResponse": "Average reply",
+    "minutes": "{minutes} min",
+    "percent": "{rate}%"
+  },
+  "units": {
+    "flat": "{price} €",
+    "perHour": "{price} €/hour",
+    "perJob": "{price} €/job",
+    "perM2": "{price} €/m²",
+    "perDay": "{price} €/day"
+  },
+  "ratingBreakdown": {
+    "quality": "Quality",
+    "punctuality": "Punctuality",
+    "communication": "Communication",
+    "value": "Value for money",
+    "professionalism": "Professionalism"
+  },
+  "sendPrivateRequest": "Send private request",
+  "askQuote": "Request a quote",
+  "replyFromPro": "Reply from the professional",
+  "noReviewsYet": "No reviews yet — be the first to leave one after a job."
+}

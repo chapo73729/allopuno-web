@@ -17,14 +17,23 @@ DEMANDE → DIFFUSION INTELLIGENTE → RÉPONSES → COMPARAISON → CHOIX
 
 ## État du projet
 
-**Phase actuelle : Architecture (Phase 0).**
-Le développement du MVP ne démarre qu'après validation du dossier d'architecture.
+**Phase actuelle : Phase 1 — construction du site (vitrine v1 livrée).**
 
 | Jalons | Statut |
 |---|---|
 | Cahier des charges produit | ✅ Reçu (v1, 134 sections) |
-| Dossier d'architecture | ✅ Rédigé — en attente de validation |
-| MVP (Phase 1) | ⏳ Après validation |
+| Dossier d'architecture | ✅ Validé (`docs/`) |
+| Fondations : monorepo, design system, i18n sq/en, CI | ✅ |
+| Site web v1 (toutes les pages publiques, données démo) | ✅ ~90 pages statiques, build vert |
+| Backend `/api/v1` (NestJS + PostgreSQL, `docs/schema.sql`) | ⏳ prochaine étape |
+| Auth réelle (OTP), publication réelle, matching, messagerie | ⏳ Phase 1 (suite) |
+
+### Lancer le site en local
+
+```bash
+pnpm install
+pnpm dev          # http://localhost:3000 — albanais par défaut, /en pour l'anglais
+```
 
 ## Dossier d'architecture
 

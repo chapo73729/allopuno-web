@@ -1,0 +1,39 @@
+{
+  "postedAgo": "Publikuar {ago}",
+  "offersReceived": "{count, plural, =0 {Ende pa oferta} =1 {1 ofertë} other {# oferta}}",
+  "compare": {
+    "title": "Krahaso ofertat",
+    "price": "Çmimi",
+    "availability": "Disponueshmëria",
+    "duration": "Kohëzgjatja",
+    "distance": "Distanca",
+    "rating": "Vlerësimi",
+    "responseTime": "Koha e përgjigjes",
+    "respondedIn": "U përgjigj për {minutes} min",
+    "verifications": "Verifikimet",
+    "choose": "Zgjidh këtë ofertë",
+    "message": "Mesazh",
+    "hintClosest": "Më i afërti",
+    "hintTopRated": "Nota më e lartë",
+    "hintFastest": "Më i disponueshmi",
+    "hintBestValue": "Raport i mirë çmim/cilësi",
+    "disclaimer": "Këto etiketa janë llogaritje ndihmëse — zgjedhja është gjithmonë e jotja."
+  },
+  "status": {
+    "published": "E publikuar",
+    "matched": "Oferta e pranuar",
+    "inProgress": "Në proces",
+    "completed": "E përfunduar",
+    "cancelled": "E anuluar"
+  },
+  "detail": {
+    "location": "Vendndodhja",
+    "date": "Data",
+    "budget": "Buxheti",
+    "category": "Kategoria",
+    "description": "Përshkrimi",
+    "aboutRequester": "Rreth kërkuesit",
+    "shareTitle": "A njeh dikë që mund ta bëjë këtë?",
+    "shareText": "Shpërndaje kërkesën — ndihmo dikë të gjejë punë."
+  }
+}

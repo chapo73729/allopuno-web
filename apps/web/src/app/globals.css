@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@source "../../../../packages/data/src";
+
+/*
+ * Design system AlloPuno v1 — « minimaliste premium » (CDC §2, §84).
+ * Une couleur principale forte (ultramarine), beaucoup d'espace blanc,
+ * typographie moderne, éléments UI fins. Light-first ; le dark viendra
+ * avec les dashboards.
+ */
+@theme inline {
+  --font-sans: var(--font-albert), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-albert), system-ui, sans-serif;
+  --font-mono: var(--font-spline-mono), ui-monospace, monospace;
+}
+
+@theme {
+  /* Marque — ultramarine */
+  --color-brand-50: #f0f3fe;
+  --color-brand-100: #e1e7fd;
+  --color-brand-200: #c3cefb;
+  --color-brand-300: #9daef7;
+  --color-brand-400: #6f87f0;
+  --color-brand-500: #4763e8;
+  --color-brand-600: #2240dd;
+  --color-brand-700: #1b34b8;
+  --color-brand-800: #172b92;
+  --color-brand-900: #131f6b;
+  --color-brand-950: #0c1440;
+
+  /* Neutres biaisés bleu (jamais de gris pur) */
+  --color-ink: #131a26;
+  --color-muted: #5a6a7e;
+  --color-faint: #8a97a8;
+  --color-line: #e4e9f1;
+  --color-paper: #fafbfd;
+  --color-card: #ffffff;
+  --color-wash: #f2f5fa;
+
+  /* Sémantique (indépendante de l'accent) */
+  --color-success: #0f8a4b;
+  --color-success-soft: #e7f6ee;
+  --color-warning: #b45309;
+  --color-warning-soft: #fdf3e7;
+  --color-danger: #c22030;
+  --color-danger-soft: #fcebed;
+
+  --radius-card: 0.875rem;
+  --radius-field: 0.625rem;
+
+  --shadow-card: 0 1px 2px rgb(19 26 38 / 0.04), 0 4px 16px rgb(19 26 38 / 0.05);
+  --shadow-pop: 0 2px 6px rgb(19 26 38 / 0.06), 0 12px 32px rgb(19 26 38 / 0.1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: var(--color-brand-100);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "indexTitle": "Shërbimet",
+  "indexSubtitle": "Gjej profesionistin e duhur për çdo punë — ose publiko një kërkesë dhe lëri ata të vijnë te ti.",
+  "prosInCategory": "Profesionistë: {category}",
+  "requestsInCategory": "Kërkesa të fundit",
+  "publishInCategory": "Ke nevojë për {category}? Publiko kërkesën",
+  "faqTitle": "Pyetje të shpeshta",
+  "emptyPros": "Po kërkojmë profesionistë në këtë kategori.",
+  "emptyProsNotify": "Më njofto kur dikush i bashkohet zonës",
+  "subcategories": "Nënkategoritë",
+  "relatedCategories": "Kategori të ngjashme",
+  "rentalTitle": "Kategoritë e qirasë",
+  "faq": {
+    "ndertim": [
+      {
+        "q": "Sa kushton një elektricist ose hidraulik në Kosovë?",
+        "a": "Si vlerësim, një intervenim i vogël (prizë, ndriçim, rrjedhje, sifon) zakonisht kushton rreth 15–40 €, ndërsa instalimi komplet elektrik i një banese llogaritet shpesh rreth 8–12 € për m². Çmimi i saktë varet nga puna — krahaso disa oferta para se të vendosësh."
+      },
+      {
+        "q": "Sa kushton lyerja e një banese?",
+        "a": "Lyerja zakonisht llogaritet për m²: si vlerësim, rreth 2–4 € për m² vetëm lyerje, ose 4–6 € për m² me gletim. Për një banesë 70–90 m² kjo del shpesh rreth 150–350 €, varësisht nga gjendja e mureve dhe kush e sjell materialin."
+      },
+      {
+        "q": "Si e gjej një mjeshtër të besueshëm?",
+        "a": "Publiko kërkesën me detaje (çfarë, ku, kur) dhe krahaso ofertat: shiko vlerësimet e klientëve të mëparshëm, verifikimet e profilit dhe punët e kryera. Kërko çmim të qartë para fillimit të punës dhe mos parapaguaj pa një marrëveshje të qartë."
+      }
+    ],
+    "shtepia": [
+      {
+        "q": "Sa kushton pastrimi i një banese?",
+        "a": "Si vlerësim, pastrimi standard i një banese kushton shpesh rreth 20–50 €, ndërsa pastrimi i thellë (pas renovimit ose para hyrjes) mund të shkojë 50–120 €, varësisht nga sipërfaqja dhe gjendja."
+      },
+      {
+        "q": "Sa kushton montimi i mobiljeve?",
+        "a": "Montimi i një elementi të vetëm (dollap, krevat, tavolinë) shpesh kushton rreth 10–25 €, ndërsa një dhomë e plotë rreth 25–60 €. Shëno në kërkesë numrin e elementeve dhe nëse mjeshtri duhet t'i sjellë veglat e veta."
+      },
+      {
+        "q": "Sa kushton një shpërngulje brenda qytetit?",
+        "a": "Si vlerësim, shpërngulja e një banese njëdhomëshe brenda qytetit me furgon dhe dy punëtorë kushton shpesh rreth 40–80 €. Kati pa ashensor, largësia dhe mobiljet e mëdha e rrisin çmimin — përshkruaji këto në kërkesë."
+      }
+    ],
+    "automjete": [
+      {
+        "q": "Sa kushton diagnostika kompjuterike e veturës?",
+        "a": "Si vlerësim, diagnostika kompjuterike kushton shpesh rreth 10–20 €. Disa servise e zbresin nga çmimi nëse riparimin e kryen aty — pyet paraprakisht në ofertë."
+      },
+      {
+        "q": "Sa kushton ndërrimi dhe balancimi i gomave?",
+        "a": "Montimi dhe balancimi i katër gomave zakonisht kushton rreth 10–20 €, varësisht nga dimensioni. Në sezonin e ndërrimit (tetor–nëntor dhe mars–prill) rezervo me kohë, se gomisteritë mbushen."
+      },
+      {
+        "q": "Vetura nuk ndizet — a vjen mekaniku te unë?",
+        "a": "Po, disa mekanikë ofrojnë dalje në terren dhe ka edhe shërbime karrotreci për tërheqje deri në servis. Shëno në kërkesë vendndodhjen dhe simptomat (p.sh. nuk starton, ndez llambë, bën zhurmë) që ofertat të jenë të sakta."
+      }
+    ],
+    "transport": [
+      {
+        "q": "Sa kushton një transport me furgon brenda qytetit?",
+        "a": "Si vlerësim, një transport i vogël (disa kuti, një mobilje) kushton shpesh rreth 15–40 €, ndërsa një shpërngulje e plotë me punëtorë rreth 40–80 €. Çmimi varet nga vëllimi, kati dhe distanca."
+      },
+      {
+        "q": "Çfarë duhet të shënoj në kërkesën për transport?",
+        "a": "Sa më shumë detaje, aq më të sakta ofertat: çfarë po transporton (kuti, mobilje, pajisje), nga ku dhe për ku, kati dhe a ka ashensor, data e dëshiruar dhe a të duhen punëtorë për ngarkim."
+      },
+      {
+        "q": "A bëhen transporte edhe mes qyteteve?",
+        "a": "Po — shumica e transportuesve mbulojnë gjithë Kosovën. Si vlerësim, një transport mes dy qyteteve (p.sh. Prishtinë–Ferizaj) nis shpesh nga rreth 30–50 €, varësisht nga distanca dhe ngarkesa."
+      }
+    ],
+    "digjitale": [
+      {
+        "q": "Sa kushton ndërrimi i ekranit të telefonit?",
+        "a": "Si vlerësim, ndërrimi i ekranit kushton shpesh rreth 25–120 €, varësisht nga modeli dhe cilësia e ekranit (origjinal apo zëvendësues). Shumica e riparimeve kryhen brenda ditës."
+      },
+      {
+        "q": "Sa kushton një webfaqe e thjeshtë?",
+        "a": "Si vlerësim, një faqe e thjeshtë prezantuese nis shpesh nga rreth 150–500 €, ndërsa dyqanet online dhe projektet më komplekse kushtojnë dukshëm më shumë. Përshkruaj qartë çfarë të duhet (faqe, gjuhë, përmbajtje) dhe krahaso disa oferta."
+      },
+      {
+        "q": "A ka garanci për riparimet e telefonave dhe kompjuterëve?",
+        "a": "Shumë servise japin garanci për pjesët e ndërruara, shpesh 3–6 muaj. Pyet gjithmonë para se të fillojë puna se çfarë mbulon garancia dhe kërko konfirmim me shkrim në bisedë."
+      }
+    ],
+    "personale": [
+      {
+        "q": "Sa kushton një orë mësimi privat?",
+        "a": "Si vlerësim, një orë mësimi privat kushton shpesh rreth 5–15 €, varësisht nga lënda dhe niveli — përgatitja për maturë ose universitet zakonisht qëndron në pjesën e sipërme të kësaj fashe."
+      },
+      {
+        "q": "Si e zgjedh një kujdestare të besueshme për fëmijë?",
+        "a": "Shiko verifikimet e profilit dhe vlerësimet e prindërve të tjerë, dhe cakto një takim njohjeje para se të vendosësh. Bisedoni qartë oraret, detyrat dhe çmimin — dhe fillo me një periudhë të shkurtër prove."
+      },
+      {
+        "q": "A mund të mbahen mësimet online?",
+        "a": "Po — shumë instruktorë ofrojnë mësime online ose në shtëpinë tënde. Shëno preferencën në kërkesë bashkë me lëndën, nivelin dhe sa herë në javë të duhen orët."
+      }
+    ],
+    "evente": [
+      {
+        "q": "Sa kushton një fotograf dasme në Kosovë?",
+        "a": "Si vlerësim, një fotograf për një ditë të plotë dasme kushton shpesh rreth 300–600 €, varësisht nga përvoja dhe paketa. Foto dhe video së bashku kushtojnë më shumë — pyet çfarë përfshin paketa (orë, foto të përpunuara, afati i dorëzimit)."
+      },
+      {
+        "q": "Sa kohë përpara duhet ta rezervoj DJ-in ose fotografin?",
+        "a": "Për dasma në sezonin e verës këshillohet rezervimi 3–6 muaj përpara, se datat e mira zihen herët. Për ditëlindje dhe festa më të vogla shpesh mjaftojnë disa javë."
+      },
+      {
+        "q": "Çfarë duhet të përfshijë kërkesa për një event?",
+        "a": "Data dhe vendi, numri i mysafirëve, sa orë shërbim të duhen dhe stili që kërkon (p.sh. foto natyrale, muzikë live apo DJ). Sa më i qartë përshkrimi, aq më të krahasueshme ofertat që merr."
+      }
+    ]
+  }
+}

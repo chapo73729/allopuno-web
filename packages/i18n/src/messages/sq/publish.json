@@ -1,0 +1,57 @@
+{
+  "title": "Publiko kërkesën",
+  "subtitle": "Përshkruaje lirshëm — ne kujdesemi për pjesën tjetër.",
+  "freeText": {
+    "label": "Çfarë të duhet?",
+    "placeholder": "P.sh. Më duhet një hidraulik në Prishtinë nesër...",
+    "hint": "Shkruaj si të flasësh normalisht. Kategorinë, vendin dhe datën i kuptojmë vetë.",
+    "analyze": "Vazhdo"
+  },
+  "understood": {
+    "title": "Ja çfarë kuptuam",
+    "edit": "Ndrysho",
+    "category": "Kategoria",
+    "city": "Qyteti",
+    "date": "Data",
+    "urgency": "Urgjenca",
+    "budget": "Buxheti",
+    "missingCategory": "Zgjidh kategorinë",
+    "missingCity": "Ku ndodhesh?"
+  },
+  "fields": {
+    "titleLabel": "Titulli i kërkesës",
+    "description": "Përshkrimi",
+    "subcategory": "Nënkategoria",
+    "photos": "Fotot (opsionale)",
+    "addPhotos": "Shto foto",
+    "photosHint": "Vetëm pamje paraprake — në versionin demo fotot nuk ngarkohen.",
+    "removePhoto": "Hiq foton",
+    "location": "Vendndodhja",
+    "date": "Kur të duhet?",
+    "dateFlexible": "Jam fleksibël",
+    "budgetLabel": "Buxheti (opsional)",
+    "budgetMin": "Nga (€)",
+    "budgetMax": "Deri (€)",
+    "visibility": "Dukshmëria",
+    "visibilityPublic": "Publike",
+    "visibilityPublicHint": "Profesionistët përkatës njoftohen automatikisht",
+    "visibilityPrivate": "Private",
+    "visibilityPrivateHint": "Vetëm profesionistët që zgjedh ti",
+    "urgent": "Urgjente",
+    "urgentHint": "Vetëm profesionistët e disponueshëm tani njoftohen menjëherë"
+  },
+  "submit": "Publiko kërkesën",
+  "success": {
+    "title": "Kërkesa u publikua!",
+    "text": "Profesionistët përkatës pranë teje po njoftohen. Ofertat do të shfaqen këtu dhe do të marrësh njoftim për secilën.",
+    "viewRequest": "Shiko kërkesën tënde",
+    "backHome": "Kthehu në ballinë",
+    "demoNote": "Version demo — kërkesa nuk ruhet ende."
+  },
+  "steps": {
+    "describe": "Përshkruaj",
+    "confirm": "Konfirmo",
+    "details": "Detajet",
+    "done": "Gati"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "about": {
+    "title": "Rreth nesh",
+    "intro": "AlloPuno është tregu vendor i shërbimeve dhe qirave për Kosovën: përshkruaj çfarë të duhet dhe personat që mund të ta bëjnë vijnë te ti.",
+    "mission": {
+      "title": "Misioni",
+      "text": "Të bëjmë gjetjen e një mjeshtri të besueshëm në Kosovë po aq të lehtë sa një pyetje te komshiu — pa telefonata pa fund, pa hamendje dhe pa humbje kohe."
+    },
+    "vision": {
+      "title": "Vizioni",
+      "text": "Një treg ku çdo profesionist i mirë gjen punë me vlerësimet e veta dhe çdo familje gjen ndihmë të shpejtë e të drejtë — në çdo qytet të Kosovës."
+    },
+    "values": {
+      "title": "Vlerat",
+      "text": "Besimi para gjithçkaje: verifikime të vërteta, vlerësime që nuk blihen dhe një renditje që nuk favorizon fshehurazi askënd. Falas për klientët — gjithmonë."
+    }
+  },
+  "help": {
+    "title": "Qendra e ndihmës",
+    "intro": "Pyetjet më të shpeshta rreth AlloPuno-s. S'e gjete përgjigjen? Na shkruaj.",
+    "faq": [
+      {
+        "q": "Si funksionon AlloPuno?",
+        "a": "Përshkruan me fjalët e tua çfarë të duhet, ne ta kuptojmë kategorinë dhe kërkesa jote u shkon profesionistëve pranë teje. Ata të kontaktojnë me oferta dhe ti zgjedh vetë me kë punon."
+      },
+      {
+        "q": "A është vërtet falas?",
+        "a": "Po. Publikimi i kërkesave, kontakti me profesionistët dhe përdorimi i platformës janë 100% falas për klientët. Nuk ka pagesa të fshehura."
+      },
+      {
+        "q": "Si verifikohen profesionistët?",
+        "a": "Çdo profesionist verifikon numrin e telefonit. Shenjat shtesë — email-i, identiteti, biznesi — tregojnë hapat e mëtejshëm të verifikimit që ka kryer profili."
+      },
+      {
+        "q": "Si funksionojnë vlerësimet?",
+        "a": "Vetëm klientët që kanë pasur kontakt real me profesionistin mund të lënë vlerësim. Vlerësimet nuk fshihen dhe nuk blihen — renditja nuk favorizon fshehurazi askënd."
+      },
+      {
+        "q": "Si të mbrohem gjatë punës?",
+        "a": "Bisedo qartë çmimin dhe afatet para se të fillojë puna, kërko faturë për punët e mëdha dhe raporto çdo profil të dyshimtë. Ekipi ynë i shqyrton raportimet me prioritet."
+      },
+      {
+        "q": "Si mund t'ju kontaktoj?",
+        "a": "Na shkruaj në faqen e kontaktit ose me email — përgjigjemi brenda 1–2 ditëve pune."
+      }
+    ],
+    "contactCta": "Na shkruaj"
+  },
+  "contact": {
+    "title": "Kontakti",
+    "intro": "Na shkruaj për çdo pyetje, sugjerim ose problem.",
+    "emailLabel": "Na shkruaj drejtpërdrejt në email",
+    "email": "info@allopuno.com",
+    "form": {
+      "title": "Ose na dërgo një mesazh këtu",
+      "name": "Emri",
+      "email": "Email-i",
+      "message": "Mesazhi",
+      "submit": "Dërgo mesazhin",
+      "thanksTitle": "Faleminderit!",
+      "thanksText": "Version demo — formulari nuk dërgon ende mesazhe. Deri atëherë, na shkruaj drejtpërdrejt në email."
+    }
+  },
+  "terms": {
+    "title": "Kushtet e përdorimit",
+    "intro": "Version pune — kushtet e plota publikohen para lansimit.",
+    "sections": [
+      {
+        "title": "Llogaria",
+        "text": "Për të publikuar kërkesa ose për të ofruar shërbime duhet një llogari me numër telefoni të verifikuar. Ti je përgjegjës për të dhënat që jep dhe për sigurinë e llogarisë tënde. Llogaritë e rreme ose të dyfishta mund të mbyllen."
+      },
+      {
+        "title": "Përmbajtja",
+        "text": "Kërkesat, profilet, fotot dhe vlerësimet duhet të jenë të vërteta dhe të tuat. Ndalohet përmbajtja mashtruese, fyese ose e paligjshme; ne mund ta heqim atë dhe të kufizojmë llogarinë që e ka publikuar."
+      },
+      {
+        "title": "Roli i AlloPuno-s",
+        "text": "AlloPuno lidh klientët me profesionistët — nuk jemi palë në marrëveshjen mes tyre. Çmimi, afatet dhe cilësia e punës dakordohen drejtpërdrejt mes klientit dhe profesionistit."
+      },
+      {
+        "title": "Përgjegjësitë",
+        "text": "Përdore platformën me mirëbesim: respekto marrëveshjet, mos abuzo me të dhënat e kontaktit dhe raporto sjelljet e dyshimta. Ne nuk garantojmë rezultatin e punëve, por punojmë që profilet dhe vlerësimet të mbeten të besueshme."
+      },
+      {
+        "title": "Kontakti",
+        "text": "Për pyetje rreth këtyre kushteve na shkruaj në info@allopuno.com. Ky është një version pune dhe do të plotësohet para lansimit zyrtar."
+      }
+    ]
+  },
+  "privacy": {
+    "title": "Politika e privatësisë",
+    "intro": "Version pune — politika e plotë publikohet para lansimit.",
+    "sections": [
+      {
+        "title": "Çfarë të dhënash mbledhim",
+        "text": "Të dhënat që na i jep vetë: emri, numri i telefonit, email-i (nëse e shton), qyteti dhe përmbajtja që publikon — kërkesa, profile, foto dhe vlerësime."
+      },
+      {
+        "title": "Si i përdorim",
+        "text": "Për të lidhur kërkesat me profesionistët e duhur pranë teje, për të mbajtur llogarinë të sigurt dhe për të përmirësuar shërbimin. Nuk të dërgojmë reklama pa pëlqimin tënd."
+      },
+      {
+        "title": "Me kë i ndajmë",
+        "text": "Profili yt publik dhe kërkesat publike shihen nga përdoruesit e tjerë. Të dhënat e tua nuk ua shesim palëve të treta. Ofruesit teknikë (p.sh. hostimi) i përpunojnë vetëm për ta mbajtur platformën në punë."
+      },
+      {
+        "title": "Të drejtat e tua",
+        "text": "Mund të kërkosh qasje, korrigjim ose fshirje të të dhënave të tua në çdo kohë. Kur e mbyll llogarinë, të dhënat personale fshihen ose anonimizohen brenda një afati të arsyeshëm."
+      },
+      {
+        "title": "Kontakti",
+        "text": "Për çdo pyetje rreth privatësisë na shkruaj në info@allopuno.com. Ky është një version pune dhe do të saktësohet para lansimit zyrtar."
+      }
+    ]
+  },
+  "notFound": {
+    "title": "Faqja nuk u gjet",
+    "text": "Faqja që kërkove nuk ekziston ose është zhvendosur.",
+    "backHome": "Kthehu në ballinë"
+  }
+}

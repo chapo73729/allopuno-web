@@ -1,0 +1,57 @@
+{
+  "title": "Post a request",
+  "subtitle": "Describe it freely — we take care of the rest.",
+  "freeText": {
+    "label": "What do you need?",
+    "placeholder": "E.g. I need a plumber in Prishtina tomorrow...",
+    "hint": "Write like you'd normally speak. We detect the category, place and date for you.",
+    "analyze": "Continue"
+  },
+  "understood": {
+    "title": "Here's what we understood",
+    "edit": "Change",
+    "category": "Category",
+    "city": "City",
+    "date": "Date",
+    "urgency": "Urgency",
+    "budget": "Budget",
+    "missingCategory": "Choose a category",
+    "missingCity": "Where are you?"
+  },
+  "fields": {
+    "titleLabel": "Request title",
+    "description": "Description",
+    "subcategory": "Subcategory",
+    "photos": "Photos (optional)",
+    "addPhotos": "Add photos",
+    "photosHint": "Preview only — photos are not uploaded in the demo version.",
+    "removePhoto": "Remove photo",
+    "location": "Location",
+    "date": "When do you need it?",
+    "dateFlexible": "I'm flexible",
+    "budgetLabel": "Budget (optional)",
+    "budgetMin": "From (€)",
+    "budgetMax": "Up to (€)",
+    "visibility": "Visibility",
+    "visibilityPublic": "Public",
+    "visibilityPublicHint": "Relevant professionals are notified automatically",
+    "visibilityPrivate": "Private",
+    "visibilityPrivateHint": "Only professionals you pick",
+    "urgent": "Urgent",
+    "urgentHint": "Only professionals available right now are notified immediately"
+  },
+  "submit": "Post request",
+  "success": {
+    "title": "Your request is live!",
+    "text": "Relevant professionals near you are being notified. Offers will appear here and you'll get a notification for each one.",
+    "viewRequest": "View your request",
+    "backHome": "Back to home",
+    "demoNote": "Demo version — your request is not saved yet."
+  },
+  "steps": {
+    "describe": "Describe",
+    "confirm": "Confirm",
+    "details": "Details",
+    "done": "Done"
+  }
+}

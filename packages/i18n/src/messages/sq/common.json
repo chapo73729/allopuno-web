@@ -1,0 +1,74 @@
+{
+  "brand": {
+    "name": "AlloPuno",
+    "tagline": "Çfarë të duhet?",
+    "motto": "Kërko. Ofro. Gjej. Puno."
+  },
+  "nav": {
+    "services": "Shërbimet",
+    "rentals": "Qira",
+    "requests": "Kërkesat",
+    "search": "Kërko",
+    "publish": "Publiko kërkesën",
+    "login": "Hyr",
+    "register": "Regjistrohu",
+    "becomePro": "Ofro shërbimet e tua",
+    "menu": "Menyja",
+    "close": "Mbyll",
+    "mainLabel": "Navigimi kryesor",
+    "mobileLabel": "Menyja e navigimit"
+  },
+  "actions": {
+    "seeAll": "Shiko të gjitha",
+    "back": "Kthehu",
+    "continue": "Vazhdo",
+    "skip": "Kalo",
+    "cancel": "Anulo",
+    "save": "Ruaj",
+    "send": "Dërgo",
+    "respond": "Përgjigju",
+    "contact": "Kontakto",
+    "share": "Shpërndaje",
+    "report": "Raporto",
+    "showMore": "Shfaq më shumë"
+  },
+  "badges": {
+    "phoneVerified": "Telefoni i verifikuar",
+    "emailVerified": "Email-i i verifikuar",
+    "identityVerified": "Identiteti i verifikuar",
+    "businessVerified": "Biznes i verifikuar",
+    "availableNow": "I disponueshëm tani",
+    "urgent": "Urgjente",
+    "new": "E re",
+    "sponsored": "E sponsorizuar",
+    "free": "Falas"
+  },
+  "meta": {
+    "distanceKm": "{km} km",
+    "reviews": "{count, plural, =1 {1 vlerësim} other {# vlerësime}}",
+    "jobsDone": "{count, plural, =1 {1 punë e kryer} other {# punë të kryera}}",
+    "responseRate": "{rate}% përgjigje",
+    "respondsIn": "Përgjigjet për ~{minutes} min",
+    "memberSince": "Anëtar që nga {year}",
+    "perDay": "€{price}/ditë",
+    "budget": "Buxheti {min}–{max} €",
+    "noBudget": "Buxhet i hapur"
+  },
+  "footer": {
+    "product": "Produkti",
+    "company": "Kompania",
+    "legal": "Ligjore",
+    "about": "Rreth nesh",
+    "help": "Qendra e ndihmës",
+    "contact": "Kontakti",
+    "terms": "Kushtet e përdorimit",
+    "privacy": "Privatësia",
+    "freeNote": "AlloPuno është 100% falas.",
+    "copyright": "© {year} AlloPuno. Të gjitha të drejtat e rezervuara."
+  },
+  "language": {
+    "label": "Gjuha",
+    "sq": "Shqip",
+    "en": "English"
+  }
+}

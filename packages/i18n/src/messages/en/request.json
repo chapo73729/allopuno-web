@@ -1,0 +1,39 @@
+{
+  "postedAgo": "Posted {ago}",
+  "offersReceived": "{count, plural, =0 {No offers yet} =1 {1 offer} other {# offers}}",
+  "compare": {
+    "title": "Compare offers",
+    "price": "Price",
+    "availability": "Availability",
+    "duration": "Duration",
+    "distance": "Distance",
+    "rating": "Rating",
+    "responseTime": "Response time",
+    "respondedIn": "Replied in {minutes} min",
+    "verifications": "Verifications",
+    "choose": "Choose this offer",
+    "message": "Message",
+    "hintClosest": "Closest",
+    "hintTopRated": "Top rated",
+    "hintFastest": "Most available",
+    "hintBestValue": "Good value for money",
+    "disclaimer": "These labels are computed hints — the choice is always yours."
+  },
+  "status": {
+    "published": "Published",
+    "matched": "Offer accepted",
+    "inProgress": "In progress",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "detail": {
+    "location": "Location",
+    "date": "Date",
+    "budget": "Budget",
+    "category": "Category",
+    "description": "Description",
+    "aboutRequester": "About the requester",
+    "shareTitle": "Know someone who could do this?",
+    "shareText": "Share the request — help someone find work."
+  }
+}
