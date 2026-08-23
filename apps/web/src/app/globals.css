@@ -3,10 +3,10 @@
 @source "../../../../packages/data/src";
 
 /*
- * Design system AlloPuno v1 — « minimaliste premium » (CDC §2, §84).
- * Une couleur principale forte (ultramarine), beaucoup d'espace blanc,
- * typographie moderne, éléments UI fins. Light-first ; le dark viendra
- * avec les dashboards.
+ * Design system AlloPuno v2 — « premium minimaliste, éditorial ».
+ * Accent ultramarine (#2240dd), neutres biaisés bleu, beaucoup d'air,
+ * profondeur maîtrisée (halos doux), micro-animations discrètes.
+ * Mobile-first (390px d'abord). Light-first ; dark viendra avec les dashboards.
  */
 @theme inline {
   --font-sans: var(--font-albert), system-ui, sans-serif;
@@ -28,14 +28,18 @@
   --color-brand-900: #131f6b;
   --color-brand-950: #0c1440;
 
+  /* Accent chaud secondaire — pour la chaleur humaine (avis, mise en avant) */
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+
   /* Neutres biaisés bleu (jamais de gris pur) */
-  --color-ink: #131a26;
-  --color-muted: #5a6a7e;
+  --color-ink: #101728;
+  --color-muted: #566274;
   --color-faint: #8a97a8;
-  --color-line: #e4e9f1;
-  --color-paper: #fafbfd;
+  --color-line: #e5e9f1;
+  --color-paper: #f8fafc;
   --color-card: #ffffff;
-  --color-wash: #f2f5fa;
+  --color-wash: #f0f4fa;
 
   /* Sémantique (indépendante de l'accent) */
   --color-success: #0f8a4b;
@@ -45,11 +49,14 @@
   --color-danger: #c22030;
   --color-danger-soft: #fcebed;
 
-  --radius-card: 0.875rem;
-  --radius-field: 0.625rem;
+  --radius-card: 1rem;
+  --radius-field: 0.7rem;
 
-  --shadow-card: 0 1px 2px rgb(19 26 38 / 0.04), 0 4px 16px rgb(19 26 38 / 0.05);
-  --shadow-pop: 0 2px 6px rgb(19 26 38 / 0.06), 0 12px 32px rgb(19 26 38 / 0.1);
+  --shadow-card: 0 1px 2px rgb(16 23 40 / 0.04), 0 6px 20px rgb(16 23 40 / 0.05);
+  --shadow-pop: 0 2px 8px rgb(16 23 40 / 0.06), 0 18px 40px rgb(16 23 40 / 0.12);
+  --shadow-brand: 0 8px 24px rgb(34 64 221 / 0.28);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -66,6 +73,7 @@
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     text-wrap: balance;
+    letter-spacing: -0.01em;
   }
   :focus-visible {
     outline: 2px solid var(--color-brand-600);
@@ -73,13 +81,71 @@
     border-radius: 4px;
   }
   ::selection {
-    background: var(--color-brand-100);
+    background: var(--color-brand-200);
   }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
+}
+
+@layer utilities {
+  /* Dégradés & textures réutilisables */
+  .bg-brand-gradient {
+    background-image: linear-gradient(135deg, var(--color-brand-700) 0%, var(--color-brand-600) 45%, var(--color-brand-500) 100%);
+  }
+  .bg-hero-wash {
+    background-image:
+      radial-gradient(60rem 40rem at 15% -10%, rgb(34 64 221 / 0.10), transparent 60%),
+      radial-gradient(50rem 40rem at 100% 0%, rgb(111 135 240 / 0.12), transparent 55%);
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgb(16 23 40 / 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(16 23 40 / 0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 40%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+  .text-gradient {
+    background: linear-gradient(120deg, var(--color-brand-700), var(--color-brand-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .photo-overlay {
+    /* voile ultramarine cohérent sur toutes les photos (unifie le média) */
+    background-image: linear-gradient(180deg, rgb(12 20 64 / 0) 30%, rgb(12 20 64 / 0.55) 100%);
+  }
+
+  /* Micro-animations */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes float-soft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-fade-up { animation: fade-up 0.7s var(--ease-out-soft) both; }
+  .animate-fade-in { animation: fade-in 0.8s var(--ease-out-soft) both; }
+  .animate-float { animation: float-soft 6s ease-in-out infinite; }
+  .animate-marquee { animation: marquee 30s linear infinite; }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+  .delay-4 { animation-delay: 0.32s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

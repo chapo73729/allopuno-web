@@ -1,5 +1,6 @@
 {
   "hero": {
+    "badge": "100% free • Kosovo",
     "title": "What do you need?",
     "subtitle": "Describe what you need — professionals and people near you reply with offers.",
     "searchPlaceholder": "Type what you need...",
@@ -12,7 +13,13 @@
       "I need a mini excavator...",
       "Looking for a wedding photographer...",
       "I need a plumber tomorrow..."
-    ]
+    ],
+    "liveTitle": "New request near you",
+    "liveCategory": "Plumbing",
+    "liveLocation": "Prishtina · 3.2 km",
+    "liveTime": "Today",
+    "liveBudget": "€20–50",
+    "liveRespond": "Respond"
   },
   "trust": {
     "free": "100% free",
@@ -22,14 +29,33 @@
     "fast": "Fast replies",
     "fastDetail": "Offers within hours"
   },
+  "stats": {
+    "cities": "Launch cities",
+    "categories": "Service categories",
+    "free": "Free",
+    "freeValue": "100%",
+    "response": "Replies",
+    "responseValue": "In hours"
+  },
   "how": {
     "title": "How it works",
+    "subtitle": "Three steps. No endless phone calls, no wasted time.",
     "step1Title": "Describe your request",
     "step1Text": "Write freely what you need — we understand the category, place and time.",
     "step2Title": "Receive offers",
     "step2Text": "Professionals near you get notified and send you a price and availability.",
     "step3Title": "Compare and choose",
     "step3Text": "Compare prices, ratings and distance — the choice is always yours."
+  },
+  "why": {
+    "title": "Built on trust",
+    "subtitle": "Quality and safety above everything.",
+    "point1Title": "Verified profiles",
+    "point1Text": "Verified phone, identity and business. No badge without a real verification.",
+    "point2Title": "Honest ranking",
+    "point2Text": "Results never secretly favour paid accounts. Anything sponsored is clearly labelled.",
+    "point3Title": "Real reviews",
+    "point3Text": "Only clients with a real job can leave a review. No bought ratings."
   },
   "sections": {
     "categories": "Main categories",
@@ -38,13 +64,22 @@
     "topServices": "Most requested services",
     "nearRentals": "Rentals near you"
   },
+  "cities": {
+    "title": "Where we are now",
+    "subtitle": "Starting in the main cities and expanding across Kosovo.",
+    "soon": "Soon"
+  },
   "empty": {
     "categoryTitle": "We are currently looking for professionals in this category.",
     "categoryNotify": "Notify me when someone joins the area"
   },
   "proCta": {
+    "eyebrow": "For professionals",
     "title": "Do you offer services? Work with us.",
     "text": "Sign up for free, set your categories and area, and receive requests straight to your phone.",
-    "button": "Start as a professional"
+    "button": "Start as a professional",
+    "point1": "Requests straight to your phone",
+    "point2": "You set the prices",
+    "point3": "Free for 2 years"
   }
 }

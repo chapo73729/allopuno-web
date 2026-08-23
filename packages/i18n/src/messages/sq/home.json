@@ -1,5 +1,6 @@
 {
   "hero": {
+    "badge": "100% falas • Kosovë",
     "title": "Çfarë të duhet?",
     "subtitle": "Përshkruaje çfarë të duhet — profesionistët dhe personat pranë teje të përgjigjen me oferta.",
     "searchPlaceholder": "Shkruaj çfarë të duhet...",
@@ -12,7 +13,13 @@
       "Më duhet një mini-eskavator...",
       "Kërkoj fotograf për dasmë...",
       "Më duhet një hidraulik nesër..."
-    ]
+    ],
+    "liveTitle": "Kërkesë e re pranë teje",
+    "liveCategory": "Hidraulik",
+    "liveLocation": "Prishtinë · 3,2 km",
+    "liveTime": "Sot",
+    "liveBudget": "20–50 €",
+    "liveRespond": "Përgjigju"
   },
   "trust": {
     "free": "100% falas",
@@ -22,14 +29,33 @@
     "fast": "Përgjigje të shpejta",
     "fastDetail": "Oferta brenda pak orësh"
   },
+  "stats": {
+    "cities": "Qytete në nisje",
+    "categories": "Kategori shërbimesh",
+    "free": "Falas",
+    "freeValue": "100%",
+    "response": "Përgjigje",
+    "responseValue": "Pak orë"
+  },
   "how": {
     "title": "Si funksionon",
+    "subtitle": "Tri hapa. Pa telefonata pa fund, pa humbje kohe.",
     "step1Title": "Përshkruaje kërkesën",
     "step1Text": "Shkruaj lirshëm çfarë të duhet — ne e kuptojmë kategorinë, vendin dhe kohën.",
     "step2Title": "Merr oferta",
     "step2Text": "Profesionistët pranë teje njoftohen dhe të dërgojnë çmim e disponueshmëri.",
     "step3Title": "Krahaso dhe zgjidh",
     "step3Text": "Krahaso çmimet, vlerësimet dhe distancën — zgjedhja është gjithmonë e jotja."
+  },
+  "why": {
+    "title": "Ndërtuar mbi besim",
+    "subtitle": "Cilësia dhe siguria para së gjithash.",
+    "point1Title": "Profile të verifikuara",
+    "point1Text": "Telefon, identitet dhe biznes të verifikuar. Asnjë distinktiv pa verifikim real.",
+    "point2Title": "Renditje e ndershme",
+    "point2Text": "Rezultatet nuk favorizojnë fshehurazi pagesat. Çdo gjë e sponsorizuar shënohet qartë.",
+    "point3Title": "Vlerësime reale",
+    "point3Text": "Vetëm klientët me një prestacion real mund të vlerësojnë. Pa vlerësime të blera."
   },
   "sections": {
     "categories": "Kategoritë kryesore",
@@ -38,13 +64,22 @@
     "topServices": "Shërbimet më të kërkuara",
     "nearRentals": "Qira pranë teje"
   },
+  "cities": {
+    "title": "Ku jemi tani",
+    "subtitle": "Nisim në qytetet kryesore dhe zgjerohemi në gjithë Kosovën.",
+    "soon": "Së shpejti"
+  },
   "empty": {
     "categoryTitle": "Po kërkojmë profesionistë në këtë kategori.",
     "categoryNotify": "Më njofto kur dikush i bashkohet zonës"
   },
   "proCta": {
+    "eyebrow": "Për profesionistët",
     "title": "Ofron shërbime? Puno me ne.",
     "text": "Regjistrohu falas, cakto kategoritë dhe zonën tënde, dhe merr kërkesa direkt në telefon.",
-    "button": "Fillo si profesionist"
+    "button": "Fillo si profesionist",
+    "point1": "Kërkesa direkt në telefon",
+    "point2": "Ti cakton çmimet",
+    "point3": "Falas për 2 vjet"
   }
 }
