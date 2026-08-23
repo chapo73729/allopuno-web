@@ -10,6 +10,12 @@
   "subcategories": "Subcategories",
   "relatedCategories": "Related categories",
   "rentalTitle": "Rental categories",
+  "rentalSubtitle": "Rent tools, vehicles and equipment near you.",
+  "indexBadge": "Services marketplace",
+  "statCategories": "Categories",
+  "statSubcategories": "Subcategories",
+  "statFree": "Free",
+  "heroEyebrow": "{count, plural, =1 {1 specialty} other {# specialties}}",
   "faq": {
     "ndertim": [
       {

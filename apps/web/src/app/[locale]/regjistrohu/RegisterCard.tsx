@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { ArrowLeft, BadgeCheck, Info, ShieldCheck } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Info, ShieldCheck, UserPlus } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -43,7 +43,8 @@ export function RegisterCard() {
   }
 
   return (
-    <Card className="w-full max-w-md p-6 sm:p-8">
+    <Card className="relative w-full max-w-md overflow-hidden p-6 shadow-(--shadow-pop) sm:p-8">
+      <div className="bg-brand-gradient absolute inset-x-0 top-0 h-1" aria-hidden />
       {asPro && (
         <div className="mb-4 flex justify-center">
           <Badge tone="brand">
@@ -56,7 +57,10 @@ export function RegisterCard() {
       {step === "form" ? (
         <>
           <header className="text-center">
-            <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            <span className="mx-auto inline-flex size-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
+              <UserPlus className="size-6" aria-hidden />
+            </span>
+            <h1 className="mt-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">
               {t("title")}
             </h1>
             <p className="mt-2 text-sm leading-relaxed text-muted">{t("subtitle")}</p>

@@ -30,8 +30,7 @@ export function Photo({
     >
       {src ? (
         <div
-          role="img"
-          aria-label={alt}
+          {...(alt ? { role: "img", "aria-label": alt } : { "aria-hidden": true })}
           className="absolute inset-0 bg-cover bg-center transition-transform duration-500"
           style={{ backgroundImage: `url("${src}")` }}
         />

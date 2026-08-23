@@ -23,7 +23,10 @@ export function ContactForm() {
 
   if (sent) {
     return (
-      <Card className="flex flex-col items-center gap-3 px-6 py-10 text-center" role="status">
+      <Card
+        className="flex flex-col items-center gap-3 px-6 py-12 text-center shadow-(--shadow-pop)"
+        role="status"
+      >
         <span className="inline-flex size-14 items-center justify-center rounded-full bg-success-soft">
           <CheckCircle2 className="size-7 text-success" aria-hidden />
         </span>
@@ -34,7 +37,7 @@ export function ContactForm() {
   }
 
   return (
-    <Card className="p-5 sm:p-7">
+    <Card className="p-5 shadow-(--shadow-pop) sm:p-7">
       <h2 className="font-display text-xl font-semibold">{t("title")}</h2>
       <form onSubmit={submit} className="mt-5 flex flex-col gap-4">
         <div className="grid gap-4 sm:grid-cols-2">

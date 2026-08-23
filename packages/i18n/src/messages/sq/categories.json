@@ -10,6 +10,12 @@
   "subcategories": "Nënkategoritë",
   "relatedCategories": "Kategori të ngjashme",
   "rentalTitle": "Kategoritë e qirasë",
+  "rentalSubtitle": "Merr me qira vegla, automjete dhe pajisje aty pranë teje.",
+  "indexBadge": "Marketplace i shërbimeve",
+  "statCategories": "Kategori",
+  "statSubcategories": "Nënkategori",
+  "statFree": "Falas",
+  "heroEyebrow": "{count, plural, =1 {1 specialitet} other {# specialitete}}",
   "faq": {
     "ndertim": [
       {

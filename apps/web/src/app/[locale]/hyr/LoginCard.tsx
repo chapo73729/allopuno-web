@@ -59,9 +59,13 @@ export function LoginCard() {
   }
 
   return (
-    <Card className="w-full max-w-md p-6 sm:p-8">
+    <Card className="relative w-full max-w-md overflow-hidden p-6 shadow-(--shadow-pop) sm:p-8">
+      <div className="bg-brand-gradient absolute inset-x-0 top-0 h-1" aria-hidden />
       <header className="text-center">
-        <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">{t("title")}</h1>
+        <span className="mx-auto inline-flex size-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
+          <LogIn className="size-6" aria-hidden />
+        </span>
+        <h1 className="mt-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">{t("title")}</h1>
         <p className="mt-2 text-sm leading-relaxed text-muted">{t("subtitle")}</p>
       </header>
 

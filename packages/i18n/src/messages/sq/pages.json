@@ -1,7 +1,10 @@
 {
   "about": {
+    "eyebrow": "Rreth AlloPuno",
     "title": "Rreth nesh",
     "intro": "AlloPuno është tregu vendor i shërbimeve dhe qirave për Kosovën: përshkruaj çfarë të duhet dhe personat që mund të ta bëjnë vijnë te ti.",
+    "ctaTitle": "Gati të fillosh?",
+    "ctaText": "Publiko një kërkesë falas ose ofro shërbimet e tua — bashkohu me tregun vendor të Kosovës.",
     "mission": {
       "title": "Misioni",
       "text": "Të bëjmë gjetjen e një mjeshtri të besueshëm në Kosovë po aq të lehtë sa një pyetje te komshiu — pa telefonata pa fund, pa hamendje dhe pa humbje kohe."
@@ -16,8 +19,10 @@
     }
   },
   "help": {
+    "eyebrow": "Ndihmë & mbështetje",
     "title": "Qendra e ndihmës",
     "intro": "Pyetjet më të shpeshta rreth AlloPuno-s. S'e gjete përgjigjen? Na shkruaj.",
+    "faqTitle": "Pyetjet e shpeshta",
     "faq": [
       {
         "q": "Si funksionon AlloPuno?",
@@ -47,10 +52,15 @@
     "contactCta": "Na shkruaj"
   },
   "contact": {
+    "eyebrow": "Jemi këtu për ty",
     "title": "Kontakti",
     "intro": "Na shkruaj për çdo pyetje, sugjerim ose problem.",
     "emailLabel": "Na shkruaj drejtpërdrejt në email",
     "email": "info@allopuno.com",
+    "responseTitle": "Përgjigje e shpejtë",
+    "responseText": "Përgjigjemi brenda 1–2 ditëve pune.",
+    "hoursTitle": "Orari",
+    "hoursText": "E hënë–e premte, 09:00–17:00 (CET).",
     "form": {
       "title": "Ose na dërgo një mesazh këtu",
       "name": "Emri",
@@ -62,8 +72,11 @@
     }
   },
   "terms": {
+    "eyebrow": "Ligjore",
     "title": "Kushtet e përdorimit",
     "intro": "Version pune — kushtet e plota publikohen para lansimit.",
+    "tocTitle": "Në këtë faqe",
+    "updated": "Përditësuar për herë të fundit: gusht 2026",
     "sections": [
       {
         "title": "Llogaria",
@@ -88,8 +101,11 @@
     ]
   },
   "privacy": {
+    "eyebrow": "Ligjore",
     "title": "Politika e privatësisë",
     "intro": "Version pune — politika e plotë publikohet para lansimit.",
+    "tocTitle": "Në këtë faqe",
+    "updated": "Përditësuar për herë të fundit: gusht 2026",
     "sections": [
       {
         "title": "Çfarë të dhënash mbledhim",
@@ -114,8 +130,10 @@
     ]
   },
   "notFound": {
+    "eyebrow": "Gabim 404",
     "title": "Faqja nuk u gjet",
     "text": "Faqja që kërkove nuk ekziston ose është zhvendosur.",
-    "backHome": "Kthehu në ballinë"
+    "backHome": "Kthehu në ballinë",
+    "linksTitle": "Vazhdo nga këtu"
   }
 }

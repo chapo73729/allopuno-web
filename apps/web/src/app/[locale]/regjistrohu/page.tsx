@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { AuthAside } from "@/components/site/AuthAside";
 import { RegisterCard } from "./RegisterCard";
 
 export async function generateMetadata({
@@ -18,11 +19,20 @@ export default async function RegisterPage({ params }: { params: Promise<{ local
   setRequestLocale(locale);
 
   return (
-    <div className="mx-auto flex max-w-6xl justify-center px-4 py-10 sm:px-6 sm:py-16">
-      {/* useSearchParams (?si=profesionist) oblige : la carte client vit sous <Suspense>. */}
-      <Suspense fallback={null}>
-        <RegisterCard />
-      </Suspense>
-    </div>
+    <section className="relative overflow-hidden">
+      <div className="bg-hero-wash absolute inset-0" aria-hidden />
+      <div className="bg-grid absolute inset-0 opacity-60" aria-hidden />
+      <div className="relative mx-auto grid max-w-6xl items-stretch gap-8 px-4 py-10 sm:px-6 sm:py-16 lg:grid-cols-2 lg:gap-12">
+        <div className="animate-fade-up delay-1">
+          <AuthAside />
+        </div>
+        <div className="animate-fade-up flex items-center justify-center">
+          {/* useSearchParams (?si=profesionist) oblige : la carte client vit sous <Suspense>. */}
+          <Suspense fallback={null}>
+            <RegisterCard />
+          </Suspense>
+        </div>
+      </div>
+    </section>
   );
 }

@@ -1,0 +1,90 @@
+{
+  "nav": {
+    "home": "Home",
+    "requests": "Requests",
+    "messages": "Messages",
+    "notifications": "Alerts",
+    "profile": "Profile"
+  },
+  "demoNote": "Demo version — data is stored only on this device.",
+  "requests": {
+    "title": "My requests",
+    "subtitle": "Track your requests, offers and conversations in one place.",
+    "empty": "You haven't posted a request yet.",
+    "emptyText": "Describe what you need — professionals near you will reply with offers.",
+    "emptyCta": "Post your first request",
+    "status": {
+      "active": "Active",
+      "matched": "Professional chosen",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "responses": "{count, plural, =0 {No offers yet} =1 {1 offer} other {# offers}}",
+    "searching": "Notifying professionals near you...",
+    "moreComing": "More professionals may reply soon.",
+    "view": "View",
+    "cancel": "Cancel request",
+    "cancelConfirm": "Cancel this request?",
+    "cancelledBanner": "This request has been cancelled.",
+    "publishAnother": "Post another request"
+  },
+  "detail": {
+    "offersTitle": "Offers",
+    "compare": "Compare offers",
+    "select": "Choose",
+    "selected": "Chosen",
+    "message": "Message",
+    "viewProfile": "View profile",
+    "selectedBanner": "You chose {name}. Chat about the details and timing.",
+    "openConversation": "Open conversation",
+    "notSelected": "Not selected",
+    "yourRequest": "Your request",
+    "date": "Date",
+    "budget": "Budget",
+    "photos": "{count, plural, =0 {No photos} =1 {1 photo} other {# photos}}",
+    "urgent": "Urgent"
+  },
+  "messages": {
+    "title": "Messages",
+    "empty": "No conversations yet.",
+    "emptyText": "When you message a professional — or choose an offer — the conversation appears here.",
+    "emptyCta": "See my requests",
+    "aboutRequest": "About the request",
+    "inputPlaceholder": "Write a message...",
+    "send": "Send",
+    "typing": "typing...",
+    "today": "Today",
+    "actions": {
+      "appointment": "Propose appointment",
+      "quote": "Request written quote",
+      "soon": "Coming soon"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAll": "Mark all as read",
+    "empty": "No notifications right now.",
+    "emptyText": "New offers, messages and request updates will show up here.",
+    "published": "Your request is live — we're notifying professionals near you.",
+    "response": "{name} sent you an offer",
+    "selected": "You chose {name} — chat about the details",
+    "message": "New message from {name}"
+  },
+  "profile": {
+    "title": "My profile",
+    "guestName": "Guest",
+    "guestText": "Sign-up is coming soon — meanwhile everything works as a demo on this device.",
+    "statRequests": "Requests",
+    "statOffers": "Offers received",
+    "statConversations": "Conversations",
+    "links": {
+      "myRequests": "My requests",
+      "publish": "Post a request",
+      "becomePro": "Offer your services",
+      "help": "Help center",
+      "terms": "Terms of use",
+      "privacy": "Privacy"
+    },
+    "language": "Language"
+  }
+}

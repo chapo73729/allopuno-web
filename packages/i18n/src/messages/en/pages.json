@@ -1,7 +1,10 @@
 {
   "about": {
+    "eyebrow": "About AlloPuno",
     "title": "About us",
     "intro": "AlloPuno is Kosovo's local marketplace for services and rentals: describe what you need and the people who can do it come to you.",
+    "ctaTitle": "Ready to start?",
+    "ctaText": "Post a request for free or offer your services — join Kosovo's local marketplace.",
     "mission": {
       "title": "Mission",
       "text": "Make finding a trustworthy tradesperson in Kosovo as easy as asking your neighbour — no endless phone calls, no guessing and no wasted time."
@@ -16,8 +19,10 @@
     }
   },
   "help": {
+    "eyebrow": "Help & support",
     "title": "Help center",
     "intro": "The most frequent questions about AlloPuno. Didn't find your answer? Write to us.",
+    "faqTitle": "Frequently asked questions",
     "faq": [
       {
         "q": "How does AlloPuno work?",
@@ -47,10 +52,15 @@
     "contactCta": "Write to us"
   },
   "contact": {
+    "eyebrow": "We're here for you",
     "title": "Contact",
     "intro": "Write to us with any question, suggestion or problem.",
     "emailLabel": "Write to us directly by email",
     "email": "info@allopuno.com",
+    "responseTitle": "Fast response",
+    "responseText": "We reply within 1–2 working days.",
+    "hoursTitle": "Hours",
+    "hoursText": "Monday–Friday, 09:00–17:00 (CET).",
     "form": {
       "title": "Or send us a message here",
       "name": "Name",
@@ -62,8 +72,11 @@
     }
   },
   "terms": {
+    "eyebrow": "Legal",
     "title": "Terms of use",
     "intro": "Working draft — the full terms will be published before launch.",
+    "tocTitle": "On this page",
+    "updated": "Last updated: August 2026",
     "sections": [
       {
         "title": "Your account",
@@ -88,8 +101,11 @@
     ]
   },
   "privacy": {
+    "eyebrow": "Legal",
     "title": "Privacy policy",
     "intro": "Working draft — the full policy will be published before launch.",
+    "tocTitle": "On this page",
+    "updated": "Last updated: August 2026",
     "sections": [
       {
         "title": "What data we collect",
@@ -114,8 +130,10 @@
     ]
   },
   "notFound": {
+    "eyebrow": "Error 404",
     "title": "Page not found",
     "text": "The page you're looking for doesn't exist or has moved.",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "linksTitle": "Continue from here"
   }
 }

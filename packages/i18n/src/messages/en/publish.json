@@ -1,14 +1,22 @@
 {
   "title": "Post a request",
   "subtitle": "Describe it freely — we take care of the rest.",
+  "badge": "Free • No commission",
   "freeText": {
     "label": "What do you need?",
     "placeholder": "E.g. I need a plumber in Prishtina tomorrow...",
     "hint": "Write like you'd normally speak. We detect the category, place and date for you.",
-    "analyze": "Continue"
+    "analyze": "Continue",
+    "examplesLabel": "Try an example",
+    "examples": [
+      "I need a plumber in Prishtina tomorrow",
+      "Looking for home cleaning in Prizren, urgent",
+      "Furniture moving this week, budget €100-200"
+    ]
   },
   "understood": {
     "title": "Here's what we understood",
+    "yourText": "Your request",
     "edit": "Change",
     "category": "Category",
     "city": "City",
@@ -43,7 +51,12 @@
   "submit": "Post request",
   "success": {
     "title": "Your request is live!",
+    "badge": "Sent",
     "text": "Relevant professionals near you are being notified. Offers will appear here and you'll get a notification for each one.",
+    "nextTitle": "What happens next",
+    "next1": "Relevant professionals are notified right away.",
+    "next2": "Offers arrive within minutes.",
+    "next3": "You pick the best one — with no obligation.",
     "viewRequest": "View your request",
     "backHome": "Back to home",
     "demoNote": "Demo version — your request is not saved yet."
@@ -52,6 +65,7 @@
     "describe": "Describe",
     "confirm": "Confirm",
     "details": "Details",
-    "done": "Done"
+    "done": "Done",
+    "progress": "Step {current} of {total}"
   }
 }

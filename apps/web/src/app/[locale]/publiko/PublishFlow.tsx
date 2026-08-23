@@ -1,18 +1,29 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft,
   ArrowRight,
+  BadgeCheck,
+  Bell,
+  CalendarDays,
+  Camera,
   Check,
   CheckCircle2,
+  ChevronDown,
+  Eye,
   ImagePlus,
   Loader2,
+  MapPin,
+  MessagesSquare,
   Send,
   Sparkles,
-  X
+  Tag,
+  Wallet,
+  X,
+  Zap
 } from "lucide-react";
 import { cities, findCategory, serviceCategories } from "@allopuno/data";
 import { Link } from "@/i18n/navigation";
@@ -54,7 +65,7 @@ interface PhotoPreview {
 const MAX_PHOTOS = 6;
 
 const selectClasses =
-  "h-11 w-full rounded-(--radius-field) border border-line bg-card px-3 text-[0.95rem] text-ink transition-colors focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100";
+  "h-12 w-full appearance-none rounded-(--radius-field) border border-line bg-card px-3.5 pr-10 text-[0.95rem] text-ink transition-colors focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100";
 
 function emptyForm(): FormState {
   return {
@@ -70,6 +81,28 @@ function emptyForm(): FormState {
     budgetMax: "",
     visibility: "public"
   };
+}
+
+/** Habillage d'un <select> natif : ajoute le chevron cohérent du design system. */
+function SelectShell({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative">
+      {children}
+      <ChevronDown
+        className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-faint"
+        aria-hidden
+      />
+    </div>
+  );
+}
+
+/** Petite pastille d'icône pour rythmer les lignes du récapitulatif. */
+function RowIcon({ children }: { children: ReactNode }) {
+  return (
+    <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+      {children}
+    </span>
+  );
 }
 
 /** Interrupteur accessible (role=switch) avec zone tactile ≥ 44 px. */
@@ -111,11 +144,13 @@ function Switch({
 
 /** Ligne « détecté » : valeur comprise + bouton Ndrysho pour l'éditer. */
 function DetectedRow({
+  icon,
   label,
   value,
   editLabel,
   onEdit
 }: {
+  icon: ReactNode;
   label: string;
   value: string;
   editLabel: string;
@@ -123,12 +158,15 @@ function DetectedRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-3">
-      <div className="min-w-0">
-        <p className="text-sm font-medium text-ink">{label}</p>
-        <p className="mt-1 flex items-center gap-1.5 text-[0.95rem] text-muted">
-          <CheckCircle2 className="size-4 shrink-0 text-success" aria-hidden />
-          <span className="truncate">{value}</span>
-        </p>
+      <div className="flex min-w-0 items-center gap-3">
+        <RowIcon>{icon}</RowIcon>
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-ink">{label}</p>
+          <p className="mt-0.5 flex items-center gap-1.5 text-[0.95rem] text-muted">
+            <CheckCircle2 className="size-4 shrink-0 text-success" aria-hidden />
+            <span className="truncate">{value}</span>
+          </p>
+        </div>
       </div>
       <Button variant="ghost" size="sm" onClick={onEdit} className="shrink-0 text-brand-700">
         {editLabel}
@@ -198,6 +236,8 @@ export function PublishFlow() {
 
   const canPublish = Boolean(form.categorySlug && form.citySlug);
 
+  const examples = t.raw("freeText.examples") as string[];
+
   function patch(partial: Partial<FormState>) {
     setForm((prev) => ({ ...prev, ...partial }));
   }
@@ -263,6 +303,12 @@ export function PublishFlow() {
   return (
     <div>
       <header className="text-center">
+        {step === "describe" && (
+          <span className="animate-fade-in mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
+            <Sparkles className="size-3.5" aria-hidden />
+            {t("badge")}
+          </span>
+        )}
         <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
           {t("title")}
         </h1>
@@ -271,45 +317,53 @@ export function PublishFlow() {
 
       {/* Indicateur d'étapes */}
       <nav aria-label={t("title")} className="mt-7">
+        <p className="mb-3 text-center text-xs font-medium uppercase tracking-wide text-faint">
+          {t("steps.progress", { current: stepIndex + 1, total: stepLabels.length })}
+        </p>
         <ol className="flex items-center justify-center">
-          {stepLabels.map((label, i) => (
-            <li
-              key={label}
-              className="flex items-center"
-              aria-current={i === stepIndex ? "step" : undefined}
-            >
-              {i > 0 && (
-                <span
-                  className={cn("mx-2 h-px w-6 sm:mx-3 sm:w-10", i <= stepIndex ? "bg-brand-400" : "bg-line")}
-                  aria-hidden
-                />
-              )}
-              <span className="flex items-center gap-1.5">
-                <span
-                  className={cn(
-                    "inline-flex size-7 items-center justify-center rounded-full text-xs font-bold",
-                    i <= stepIndex ? "bg-brand-600 text-white" : "bg-wash text-faint"
-                  )}
-                >
-                  {i < stepIndex ? <Check className="size-4" aria-hidden /> : i + 1}
+          {stepLabels.map((label, i) => {
+            const done = i < stepIndex;
+            const current = i === stepIndex;
+            return (
+              <li key={label} className="flex items-center" aria-current={current ? "step" : undefined}>
+                {i > 0 && (
+                  <span
+                    className={cn(
+                      "mx-2 h-0.5 w-7 rounded-full transition-colors sm:mx-3 sm:w-12",
+                      i <= stepIndex ? "bg-brand-500" : "bg-line"
+                    )}
+                    aria-hidden
+                  />
+                )}
+                <span className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "inline-flex size-8 items-center justify-center rounded-full text-sm font-bold transition-all",
+                      done && "bg-brand-600 text-white",
+                      current && "bg-brand-600 text-white shadow-(--shadow-brand) ring-4 ring-brand-100",
+                      !done && !current && "bg-wash text-faint"
+                    )}
+                  >
+                    {done ? <Check className="size-4" aria-hidden /> : i + 1}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-sm font-medium",
+                      current ? "inline text-ink" : "hidden text-faint sm:inline"
+                    )}
+                  >
+                    {label}
+                  </span>
                 </span>
-                <span
-                  className={cn(
-                    "text-xs font-medium sm:text-sm",
-                    i === stepIndex ? "text-ink" : "text-faint"
-                  )}
-                >
-                  {label}
-                </span>
-              </span>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ol>
       </nav>
 
       {/* ÉTAPE 1 — Përshkruaj */}
       {step === "describe" && (
-        <Card className="mt-8 p-4 sm:p-6">
+        <Card className="animate-fade-up mt-8 p-4 sm:p-6">
           <Field label={t("freeText.label")} htmlFor="publiko-text" hint={t("freeText.hint")}>
             <Textarea
               id="publiko-text"
@@ -321,7 +375,26 @@ export function PublishFlow() {
               autoComplete="off"
             />
           </Field>
-          <div className="mt-4 flex justify-end">
+
+          {/* Exemples cliquables — remplissent le champ, aucun envoi */}
+          <div className="mt-4">
+            <p className="text-xs font-medium text-faint">{t("freeText.examplesLabel")}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {examples.map((example) => (
+                <button
+                  key={example}
+                  type="button"
+                  onClick={() => setText(example)}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1.5 text-left text-xs font-medium text-muted transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700"
+                >
+                  <Sparkles className="size-3.5 shrink-0 text-brand-400" aria-hidden />
+                  {example}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-5 flex justify-end">
             <Button
               size="lg"
               onClick={analyze}
@@ -337,16 +410,23 @@ export function PublishFlow() {
 
       {/* ÉTAPE 2 — Konfirmo */}
       {step === "confirm" && (
-        <div className="mt-8">
-          <Card>
-            <div className="flex items-center gap-2 border-b border-line px-4 py-4 sm:px-6">
-              <Sparkles className="size-5 text-brand-500" aria-hidden />
-              <h2 className="font-display text-lg font-semibold">{t("understood.title")}</h2>
+        <div className="animate-fade-up mt-8">
+          <Card className="overflow-hidden">
+            <div className="relative overflow-hidden border-b border-line bg-hero-wash px-4 py-4 sm:px-6">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex size-10 items-center justify-center rounded-xl bg-brand-600 text-white shadow-(--shadow-brand)">
+                  <Sparkles className="size-5" aria-hidden />
+                </span>
+                <h2 className="font-display text-lg font-semibold">{t("understood.title")}</h2>
+              </div>
             </div>
 
             {/* Rappel de ce qui a été écrit */}
-            <div className="mx-4 mt-4 rounded-(--radius-field) bg-wash px-3.5 py-3 sm:mx-6">
-              <p className="text-sm font-medium text-ink">{form.title}</p>
+            <div className="mx-4 mt-4 rounded-(--radius-field) border-l-2 border-brand-300 bg-wash px-3.5 py-3 sm:mx-6">
+              <p className="text-[0.7rem] font-medium uppercase tracking-wide text-faint">
+                {t("understood.yourText")}
+              </p>
+              <p className="mt-1 text-sm font-medium text-ink">{form.title}</p>
               {form.description !== form.title && (
                 <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted">
                   {form.description}
@@ -359,6 +439,7 @@ export function PublishFlow() {
               <div className="py-4">
                 {!editCategory && selectedCategory ? (
                   <DetectedRow
+                    icon={<Tag className="size-4.5" aria-hidden />}
                     label={t("understood.category")}
                     value={categoryValueLabel}
                     editLabel={t("understood.edit")}
@@ -370,38 +451,42 @@ export function PublishFlow() {
                       <label htmlFor="publiko-category" className="text-sm font-medium text-ink">
                         {t("understood.category")}
                       </label>
-                      <select
-                        id="publiko-category"
-                        className={selectClasses}
-                        value={form.categorySlug}
-                        onChange={(e) => patch({ categorySlug: e.target.value, subSlug: "" })}
-                      >
-                        <option value="">{t("understood.missingCategory")}</option>
-                        {categoryOptions.map((category) => (
-                          <option key={category.slug} value={category.slug}>
-                            {localized(category.name, locale)}
-                          </option>
-                        ))}
-                      </select>
+                      <SelectShell>
+                        <select
+                          id="publiko-category"
+                          className={selectClasses}
+                          value={form.categorySlug}
+                          onChange={(e) => patch({ categorySlug: e.target.value, subSlug: "" })}
+                        >
+                          <option value="">{t("understood.missingCategory")}</option>
+                          {categoryOptions.map((category) => (
+                            <option key={category.slug} value={category.slug}>
+                              {localized(category.name, locale)}
+                            </option>
+                          ))}
+                        </select>
+                      </SelectShell>
                     </div>
                     {selectedCategory && selectedCategory.children.length > 0 && (
                       <div className="flex flex-1 flex-col gap-1.5">
                         <label htmlFor="publiko-sub" className="text-sm font-medium text-ink">
                           {t("fields.subcategory")}
                         </label>
-                        <select
-                          id="publiko-sub"
-                          className={selectClasses}
-                          value={form.subSlug}
-                          onChange={(e) => patch({ subSlug: e.target.value })}
-                        >
-                          <option value="">{localized(selectedCategory.name, locale)}</option>
-                          {selectedCategory.children.map((sub) => (
-                            <option key={sub.slug} value={sub.slug}>
-                              {localized(sub.name, locale)}
-                            </option>
-                          ))}
-                        </select>
+                        <SelectShell>
+                          <select
+                            id="publiko-sub"
+                            className={selectClasses}
+                            value={form.subSlug}
+                            onChange={(e) => patch({ subSlug: e.target.value })}
+                          >
+                            <option value="">{localized(selectedCategory.name, locale)}</option>
+                            {selectedCategory.children.map((sub) => (
+                              <option key={sub.slug} value={sub.slug}>
+                                {localized(sub.name, locale)}
+                              </option>
+                            ))}
+                          </select>
+                        </SelectShell>
                       </div>
                     )}
                   </div>
@@ -412,6 +497,7 @@ export function PublishFlow() {
               <div className="py-4">
                 {!editCity && form.citySlug ? (
                   <DetectedRow
+                    icon={<MapPin className="size-4.5" aria-hidden />}
                     label={t("understood.city")}
                     value={cityName(form.citySlug, locale)}
                     editLabel={t("understood.edit")}
@@ -422,29 +508,32 @@ export function PublishFlow() {
                     <label htmlFor="publiko-city" className="text-sm font-medium text-ink">
                       {t("understood.city")}
                     </label>
-                    <select
-                      id="publiko-city"
-                      className={selectClasses}
-                      value={form.citySlug}
-                      onChange={(e) => patch({ citySlug: e.target.value })}
-                    >
-                      <option value="">{t("understood.missingCity")}</option>
-                      {cities.map((city) => (
-                        <option key={city.slug} value={city.slug}>
-                          {localized(city.name, locale)}
-                        </option>
-                      ))}
-                    </select>
+                    <SelectShell>
+                      <select
+                        id="publiko-city"
+                        className={selectClasses}
+                        value={form.citySlug}
+                        onChange={(e) => patch({ citySlug: e.target.value })}
+                      >
+                        <option value="">{t("understood.missingCity")}</option>
+                        {cities.map((city) => (
+                          <option key={city.slug} value={city.slug}>
+                            {localized(city.name, locale)}
+                          </option>
+                        ))}
+                      </select>
+                    </SelectShell>
                   </div>
                 )}
               </div>
 
               {/* Data + fleksibilitet */}
               <div className="py-4">
-                <label htmlFor="publiko-date" className="text-sm font-medium text-ink">
+                <label htmlFor="publiko-date" className="flex items-center gap-2 text-sm font-medium text-ink">
+                  <CalendarDays className="size-4 text-brand-500" aria-hidden />
                   {t("fields.date")}
                 </label>
-                <div className="mt-1.5 flex flex-col gap-2 sm:flex-row sm:items-center">
+                <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
                   <Input
                     id="publiko-date"
                     type="date"
@@ -452,7 +541,7 @@ export function PublishFlow() {
                     min={todayIso}
                     disabled={form.flexible}
                     onChange={(e) => patch({ date: e.target.value })}
-                    className="sm:max-w-52"
+                    className="disabled:opacity-60 sm:max-w-52"
                   />
                   <label
                     className={cn(
@@ -475,11 +564,16 @@ export function PublishFlow() {
 
               {/* Urgjenca */}
               <div className="flex items-center justify-between gap-4 py-4">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-ink">{t("fields.urgent")}</p>
-                  <p className="mt-0.5 text-xs leading-relaxed text-muted">
-                    {t("fields.urgentHint")}
-                  </p>
+                <div className="flex min-w-0 items-center gap-3">
+                  <RowIcon>
+                    <Zap className="size-4.5" aria-hidden />
+                  </RowIcon>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-ink">{t("fields.urgent")}</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted">
+                      {t("fields.urgentHint")}
+                    </p>
+                  </div>
                 </div>
                 <Switch
                   checked={form.urgent}
@@ -490,8 +584,11 @@ export function PublishFlow() {
 
               {/* Buxheti */}
               <div className="py-4">
-                <p className="text-sm font-medium text-ink">{t("fields.budgetLabel")}</p>
-                <div className="mt-1.5 grid grid-cols-2 gap-3 sm:max-w-sm">
+                <p className="flex items-center gap-2 text-sm font-medium text-ink">
+                  <Wallet className="size-4 text-brand-500" aria-hidden />
+                  {t("fields.budgetLabel")}
+                </p>
+                <div className="mt-2 grid grid-cols-2 gap-3 sm:max-w-sm">
                   <div className="flex flex-col gap-1">
                     <label htmlFor="publiko-budget-min" className="text-xs text-muted">
                       {t("fields.budgetMin")}
@@ -523,8 +620,11 @@ export function PublishFlow() {
 
               {/* Dukshmëria */}
               <div className="py-4">
-                <p className="text-sm font-medium text-ink">{t("fields.visibility")}</p>
-                <div className="mt-1.5 grid gap-2 sm:grid-cols-2">
+                <p className="flex items-center gap-2 text-sm font-medium text-ink">
+                  <Eye className="size-4 text-brand-500" aria-hidden />
+                  {t("fields.visibility")}
+                </p>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2">
                   {(
                     [
                       { value: "public", title: t("fields.visibilityPublic"), hint: t("fields.visibilityPublicHint") },
@@ -561,8 +661,11 @@ export function PublishFlow() {
 
               {/* Fotot — aperçu local uniquement, rien n'est envoyé */}
               <div className="py-4">
-                <p className="text-sm font-medium text-ink">{t("fields.photos")}</p>
-                <div className="mt-2 flex flex-wrap gap-3">
+                <p className="flex items-center gap-2 text-sm font-medium text-ink">
+                  <Camera className="size-4 text-brand-500" aria-hidden />
+                  {t("fields.photos")}
+                </p>
+                <div className="mt-2.5 flex flex-wrap gap-3">
                   {photos.map((photo) => (
                     <div
                       key={photo.id}
@@ -581,7 +684,7 @@ export function PublishFlow() {
                     </div>
                   ))}
                   {photos.length < MAX_PHOTOS && (
-                    <label className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-(--radius-field) border border-dashed border-line text-muted transition-colors hover:border-brand-300 hover:text-brand-600">
+                    <label className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-(--radius-field) border border-dashed border-line text-muted transition-colors hover:border-brand-300 hover:bg-brand-50/40 hover:text-brand-600">
                       <ImagePlus className="size-5" aria-hidden />
                       <span className="text-[0.65rem] font-medium">{t("fields.addPhotos")}</span>
                       <input
@@ -594,7 +697,7 @@ export function PublishFlow() {
                     </label>
                   )}
                 </div>
-                <p className="mt-1.5 text-xs text-muted">{t("fields.photosHint")}</p>
+                <p className="mt-2 text-xs text-muted">{t("fields.photosHint")}</p>
               </div>
             </div>
           </Card>
@@ -631,21 +734,55 @@ export function PublishFlow() {
 
       {/* ÉTAPE 3 — Sukses (simulation, rien n'est enregistré) */}
       {step === "success" && (
-        <Card className="mt-8 flex flex-col items-center gap-4 px-6 py-12 text-center">
-          <span className="inline-flex size-16 items-center justify-center rounded-full bg-success-soft">
-            <CheckCircle2 className="size-8 text-success" aria-hidden />
-          </span>
-          <h2 className="font-display text-2xl font-bold">{t("success.title")}</h2>
-          <p className="max-w-md text-sm leading-relaxed text-muted">{t("success.text")}</p>
-          <div className="mt-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <Button as={Link} href="/kerkesa/kerkesa-hidraulik-prishtine" size="lg">
-              {t("success.viewRequest")}
-            </Button>
-            <Button as={Link} href="/" variant="outline" size="lg">
-              {t("success.backHome")}
-            </Button>
+        <Card className="animate-fade-up mt-8 overflow-hidden">
+          <div className="relative overflow-hidden bg-hero-wash px-6 py-12 text-center">
+            <div className="bg-grid absolute inset-0 opacity-60" aria-hidden />
+            <div className="relative flex flex-col items-center gap-4">
+              <span className="relative inline-flex size-20 items-center justify-center">
+                <span className="animate-float absolute inset-0 rounded-full bg-success-soft" aria-hidden />
+                <span className="absolute inset-2 rounded-full bg-success/15" aria-hidden />
+                <CheckCircle2 className="relative size-10 text-success" aria-hidden />
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-success-soft px-3 py-1 text-xs font-semibold text-success">
+                <Check className="size-3.5" aria-hidden />
+                {t("success.badge")}
+              </span>
+              <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("success.title")}</h2>
+              <p className="max-w-md text-sm leading-relaxed text-muted">{t("success.text")}</p>
+            </div>
           </div>
-          <p className="mt-2 text-xs text-faint">{t("success.demoNote")}</p>
+
+          <div className="px-6 py-8">
+            {/* Çfarë ndodh tani */}
+            <div className="mx-auto max-w-md rounded-(--radius-card) border border-line bg-paper p-5">
+              <p className="text-sm font-semibold text-ink">{t("success.nextTitle")}</p>
+              <ul className="mt-3 flex flex-col gap-3">
+                {[
+                  { icon: <Bell className="size-4" aria-hidden />, text: t("success.next1") },
+                  { icon: <MessagesSquare className="size-4" aria-hidden />, text: t("success.next2") },
+                  { icon: <BadgeCheck className="size-4" aria-hidden />, text: t("success.next3") }
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                      {item.icon}
+                    </span>
+                    <span className="text-sm text-muted">{item.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Button as={Link} href="/kerkesa/kerkesa-hidraulik-prishtine" size="lg">
+                {t("success.viewRequest")}
+                <ArrowRight className="size-5" aria-hidden />
+              </Button>
+              <Button as={Link} href="/" variant="outline" size="lg">
+                {t("success.backHome")}
+              </Button>
+            </div>
+            <p className="mt-5 text-center text-xs text-faint">{t("success.demoNote")}</p>
+          </div>
         </Card>
       )}
     </div>

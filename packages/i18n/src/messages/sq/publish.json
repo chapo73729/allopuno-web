@@ -1,14 +1,22 @@
 {
   "title": "Publiko kërkesën",
   "subtitle": "Përshkruaje lirshëm — ne kujdesemi për pjesën tjetër.",
+  "badge": "Falas • Pa komision",
   "freeText": {
     "label": "Çfarë të duhet?",
     "placeholder": "P.sh. Më duhet një hidraulik në Prishtinë nesër...",
     "hint": "Shkruaj si të flasësh normalisht. Kategorinë, vendin dhe datën i kuptojmë vetë.",
-    "analyze": "Vazhdo"
+    "analyze": "Vazhdo",
+    "examplesLabel": "Provo një shembull",
+    "examples": [
+      "Më duhet një hidraulik në Prishtinë nesër",
+      "Kërkoj pastrim shtëpie në Prizren, urgjent",
+      "Transport mobiljesh brenda javës, buxhet 100-200 €"
+    ]
   },
   "understood": {
     "title": "Ja çfarë kuptuam",
+    "yourText": "Kërkesa jote",
     "edit": "Ndrysho",
     "category": "Kategoria",
     "city": "Qyteti",
@@ -43,7 +51,12 @@
   "submit": "Publiko kërkesën",
   "success": {
     "title": "Kërkesa u publikua!",
+    "badge": "U dërgua",
     "text": "Profesionistët përkatës pranë teje po njoftohen. Ofertat do të shfaqen këtu dhe do të marrësh njoftim për secilën.",
+    "nextTitle": "Çfarë ndodh tani",
+    "next1": "Profesionistët përkatës njoftohen menjëherë.",
+    "next2": "Ofertat mbërrijnë brenda pak minutash.",
+    "next3": "Zgjedh më të mirin — pa asnjë detyrim.",
     "viewRequest": "Shiko kërkesën tënde",
     "backHome": "Kthehu në ballinë",
     "demoNote": "Version demo — kërkesa nuk ruhet ende."
@@ -52,6 +65,7 @@
     "describe": "Përshkruaj",
     "confirm": "Konfirmo",
     "details": "Detajet",
-    "done": "Gati"
+    "done": "Gati",
+    "progress": "Hapi {current} nga {total}"
   }
 }

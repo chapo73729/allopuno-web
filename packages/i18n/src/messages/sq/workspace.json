@@ -1,0 +1,90 @@
+{
+  "nav": {
+    "home": "Ballina",
+    "requests": "Kërkesat",
+    "messages": "Mesazhet",
+    "notifications": "Njoftimet",
+    "profile": "Profili"
+  },
+  "demoNote": "Version demo — të dhënat ruhen vetëm në këtë pajisje.",
+  "requests": {
+    "title": "Kërkesat e mia",
+    "subtitle": "Ndiq kërkesat, ofertat dhe bisedat e tua në një vend.",
+    "empty": "Ende s'ke publikuar asnjë kërkesë.",
+    "emptyText": "Përshkruaj çfarë të duhet — profesionistët pranë teje të përgjigjen me oferta.",
+    "emptyCta": "Publiko kërkesën e parë",
+    "status": {
+      "active": "Aktive",
+      "matched": "Profesionisti u zgjodh",
+      "completed": "E përfunduar",
+      "cancelled": "E anuluar"
+    },
+    "responses": "{count, plural, =0 {Ende pa oferta} =1 {1 ofertë} other {# oferta}}",
+    "searching": "Po njoftojmë profesionistët pranë teje...",
+    "moreComing": "Profesionistë të tjerë mund të përgjigjen së shpejti.",
+    "view": "Shiko",
+    "cancel": "Anulo kërkesën",
+    "cancelConfirm": "Ta anulojmë këtë kërkesë?",
+    "cancelledBanner": "Kjo kërkesë është anuluar.",
+    "publishAnother": "Publiko një kërkesë tjetër"
+  },
+  "detail": {
+    "offersTitle": "Ofertat",
+    "compare": "Krahaso ofertat",
+    "select": "Zgjidh",
+    "selected": "I zgjedhur",
+    "message": "Mesazh",
+    "viewProfile": "Shiko profilin",
+    "selectedBanner": "Ke zgjedhur {name}. Bisedoni për detajet dhe orarin.",
+    "openConversation": "Hap bisedën",
+    "notSelected": "Nuk u zgjodh",
+    "yourRequest": "Kërkesa jote",
+    "date": "Data",
+    "budget": "Buxheti",
+    "photos": "{count, plural, =0 {Pa foto} =1 {1 foto} other {# foto}}",
+    "urgent": "Urgjente"
+  },
+  "messages": {
+    "title": "Mesazhet",
+    "empty": "Ende s'ke asnjë bisedë.",
+    "emptyText": "Kur t'i shkruash një profesionisti — ose të zgjedhësh një ofertë — biseda shfaqet këtu.",
+    "emptyCta": "Shiko kërkesat e mia",
+    "aboutRequest": "Rreth kërkesës",
+    "inputPlaceholder": "Shkruaj një mesazh...",
+    "send": "Dërgo",
+    "typing": "po shkruan...",
+    "today": "Sot",
+    "actions": {
+      "appointment": "Propozo takim",
+      "quote": "Kërko ofertë me shkrim",
+      "soon": "Së shpejti"
+    }
+  },
+  "notifications": {
+    "title": "Njoftimet",
+    "markAll": "Shëno të gjitha si të lexuara",
+    "empty": "S'ka njoftime për momentin.",
+    "emptyText": "Këtu do të shohësh ofertat e reja, mesazhet dhe përditësimet e kërkesave.",
+    "published": "Kërkesa jote u publikua — po njoftojmë profesionistët pranë teje.",
+    "response": "{name} të dërgoi një ofertë",
+    "selected": "Zgjodhe {name} — bisedoni për detajet",
+    "message": "Mesazh i ri nga {name}"
+  },
+  "profile": {
+    "title": "Profili im",
+    "guestName": "Vizitor",
+    "guestText": "Regjistrimi aktivizohet së shpejti — ndërkohë gjithçka funksionon si demo në këtë pajisje.",
+    "statRequests": "Kërkesa",
+    "statOffers": "Oferta të marra",
+    "statConversations": "Biseda",
+    "links": {
+      "myRequests": "Kërkesat e mia",
+      "publish": "Publiko kërkesë",
+      "becomePro": "Ofro shërbimet e tua",
+      "help": "Qendra e ndihmës",
+      "terms": "Kushtet e përdorimit",
+      "privacy": "Privatësia"
+    },
+    "language": "Gjuha"
+  }
+}

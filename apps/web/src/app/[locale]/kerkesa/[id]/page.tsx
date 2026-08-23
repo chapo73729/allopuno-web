@@ -1,7 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { BadgeCheck, CalendarDays, Clock, MapPin, MessageSquare, Share2 } from "lucide-react";
+import {
+  BadgeCheck,
+  CalendarDays,
+  Clock,
+  Flame,
+  Info,
+  MapPin,
+  MessageSquare,
+  Share2,
+  Wallet,
+  type LucideIcon
+} from "lucide-react";
 import { findCategory } from "@allopuno/data";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/Button";
@@ -11,6 +22,8 @@ import { Avatar } from "@/components/ui/Avatar";
 import { RatingStars } from "@/components/ui/RatingStars";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { CategoryIcon } from "@/components/CategoryIcon";
+import { cn } from "@/lib/cn";
 import { demoRequests, findPro, findRequest, offersForRequest } from "@/lib/demo";
 import type { DemoOffer, DemoPro } from "@/lib/demo";
 import { cityName, formatAgo, formatEur, localized } from "@/lib/format";
@@ -55,6 +68,8 @@ const gridColsByCount: Record<number, string> = {
   4: "lg:grid-cols-4"
 };
 
+const staggerDelays = ["delay-1", "delay-2", "delay-3", "delay-4"];
+
 export default async function RequestDetailPage({
   params
 }: {
@@ -87,98 +102,160 @@ export default async function RequestDetailPage({
   const offerPrice = (offer: DemoOffer): string =>
     offer.priceTo != null ? `${offer.price}–${formatEur(offer.priceTo)}` : formatEur(offer.price);
 
+  const budgetValue =
+    request.budgetMin != null && request.budgetMax != null
+      ? `${request.budgetMin}–${formatEur(request.budgetMax)}`
+      : t("detail.budgetOpen");
+
+  const metaItems: Array<{ icon: LucideIcon; label: string; value: string; accent?: boolean }> = [
+    { icon: MapPin, label: t("detail.location"), value: cityName(request.citySlug, locale) },
+    { icon: CalendarDays, label: t("detail.date"), value: localized(request.neededOn, locale) },
+    { icon: Wallet, label: t("detail.budget"), value: budgetValue, accent: true }
+  ];
+
   const shareBlock = (
-    <div className="flex flex-col gap-4 rounded-(--radius-card) bg-wash p-5 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <p className="font-display font-semibold">{t("detail.shareTitle")}</p>
-        <p className="mt-1 text-sm text-muted">{t("detail.shareText")}</p>
+    <div className="relative overflow-hidden rounded-(--radius-card) border border-brand-100 bg-brand-50/60 p-5 sm:p-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-3">
+          <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-600 text-white shadow-(--shadow-brand)">
+            <Share2 className="size-5" aria-hidden />
+          </span>
+          <div>
+            <p className="font-display font-semibold">{t("detail.shareTitle")}</p>
+            <p className="mt-1 text-sm text-muted">{t("detail.shareText")}</p>
+          </div>
+        </div>
+        <Button type="button" variant="secondary" className="shrink-0 self-start sm:self-auto">
+          <Share2 className="size-4" aria-hidden />
+          {tc("actions.share")}
+        </Button>
       </div>
-      <Button type="button" variant="outline" className="shrink-0 self-start sm:self-auto">
-        <Share2 className="size-4" aria-hidden />
-        {tc("actions.share")}
-      </Button>
     </div>
   );
 
   return (
     <>
-      {/* Fil de la demande */}
-      <section className="border-b border-line bg-card">
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
-          <div className="max-w-3xl">
+      {/* En-tête de la demande */}
+      <section className="relative overflow-hidden border-b border-line bg-card">
+        <div className="bg-hero-wash absolute inset-0" aria-hidden />
+        <div className="bg-grid absolute inset-0 opacity-60" aria-hidden />
+        <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12">
+          <div className="max-w-3xl animate-fade-up">
             <div className="flex flex-wrap items-center gap-2">
               {category && (
-                <Badge tone="brand">{locale === "en" ? category.name.en : category.name.sq}</Badge>
+                <Badge tone="brand">
+                  <CategoryIcon name={category.icon} className="size-3.5" />
+                  {locale === "en" ? category.name.en : category.name.sq}
+                </Badge>
               )}
-              {request.urgent && <Badge tone="danger">{tc("badges.urgent")}</Badge>}
+              {request.urgent && (
+                <Badge tone="danger">
+                  <Flame className="size-3.5" aria-hidden />
+                  {tc("badges.urgent")}
+                </Badge>
+              )}
             </div>
-            <h1 className="mt-3 font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
+            <h1 className="mt-4 font-display text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl">
               {localized(request.title, locale)}
             </h1>
-            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
-              <span className="inline-flex items-center gap-1">
-                <MapPin className="size-4" aria-hidden />
-                {cityName(request.citySlug, locale)}
-              </span>
-              <span className="inline-flex items-center gap-1">
-                <Clock className="size-4" aria-hidden />
-                {formatAgo(request.hoursAgo, locale)}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Avatar name={request.authorName} size="sm" />
-                <span className="sr-only">{t("detail.aboutRequester")}</span>
-                <span className="font-medium text-ink">{request.authorName}</span>
-              </span>
+
+            {/* Demandeur */}
+            <div className="mt-5 flex items-center gap-3">
+              <Avatar name={request.authorName} size="md" />
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-ink">
+                  <span className="sr-only">{t("detail.aboutRequester")}: </span>
+                  {request.authorName}
+                </p>
+                <p className="mt-0.5 inline-flex items-center gap-1 text-xs text-muted">
+                  <Clock className="size-3.5" aria-hidden />
+                  {t("postedAgo", { ago: formatAgo(request.hoursAgo, locale) })}
+                </p>
+              </div>
             </div>
-            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-              <span className="font-semibold">
-                {request.budgetMin != null && request.budgetMax != null
-                  ? tc("meta.budget", { min: request.budgetMin, max: request.budgetMax })
-                  : tc("meta.noBudget")}
-              </span>
-              <span className="inline-flex items-center gap-1 text-muted">
-                <CalendarDays className="size-4" aria-hidden />
-                <span className="sr-only">{t("detail.date")}</span>
-                {localized(request.neededOn, locale)}
-              </span>
-            </div>
+
+            {/* Méta clés */}
+            <dl className="mt-6 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-3">
+              {metaItems.map(({ icon: Icon, label, value, accent }) => (
+                <div
+                  key={label}
+                  className={cn(
+                    "rounded-(--radius-field) border p-3",
+                    accent ? "col-span-2 border-brand-100 bg-brand-50/70 sm:col-span-1" : "border-line bg-card/70"
+                  )}
+                >
+                  <dt className="inline-flex items-center gap-1.5 text-[0.7rem] font-medium uppercase tracking-wide text-faint">
+                    <Icon className={cn("size-3.5", accent ? "text-brand-600" : "text-muted")} aria-hidden />
+                    {label}
+                  </dt>
+                  <dd
+                    className={cn(
+                      "mt-1 font-display text-sm font-semibold",
+                      accent ? "text-brand-700" : "text-ink"
+                    )}
+                  >
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         {/* Description complète */}
-        <section className="max-w-3xl">
+        <section className="max-w-3xl animate-fade-up delay-1">
           <SectionHeading title={t("detail.description")} />
-          <Card className="p-5">
-            <p className="text-sm leading-relaxed sm:text-base">
+          <Card className="p-5 sm:p-6">
+            <p className="text-[0.95rem] leading-relaxed sm:text-base">
               {localized(request.description, locale)}
             </p>
           </Card>
         </section>
 
         {/* Encart partage */}
-        <section className="mt-8 max-w-3xl">{shareBlock}</section>
+        <section className="mt-8 max-w-3xl animate-fade-up delay-2">{shareBlock}</section>
 
         {/* LE COMPARATEUR — CDC §20 */}
         {offers.length > 0 ? (
           <section className="pt-12">
-            <SectionHeading title={t("compare.title")} />
+            <SectionHeading
+              title={t("compare.title")}
+              action={
+                <span className="text-sm font-medium text-muted">
+                  {t("offersReceived", { count: offers.length })}
+                </span>
+              }
+            />
             <div className={`grid grid-cols-1 gap-4 ${gridColsByCount[offers.length] ?? "lg:grid-cols-4"}`}>
-              {offers.map(({ offer, pro }) => (
-                <Card key={offer.id} className="flex flex-col p-4">
+              {offers.map(({ offer, pro }, i) => (
+                <Card
+                  key={offer.id}
+                  className={cn(
+                    "group animate-fade-up relative flex flex-col overflow-hidden p-4 transition-all duration-300 hover:-translate-y-1 hover:border-brand-200 hover:shadow-(--shadow-pop)",
+                    staggerDelays[i]
+                  )}
+                >
+                  {/* Filet d'accent qui se révèle au survol */}
+                  <span
+                    aria-hidden
+                    className="bg-brand-gradient absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
+                  />
                   <Link
                     href={`/profesionisti/${pro.id}`}
-                    className="flex items-center gap-2.5 hover:text-brand-700"
+                    className="flex items-center gap-2.5"
                   >
                     <Avatar name={pro.name} size="sm" />
-                    <span className="min-w-0 truncate font-display text-sm font-semibold">
-                      {pro.name}
-                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-display text-sm font-semibold transition-colors group-hover:text-brand-700">
+                        {pro.name}
+                      </p>
+                      <RatingStars rating={pro.rating} count={pro.ratingCount} className="mt-0.5" />
+                    </div>
                   </Link>
-                  <RatingStars rating={pro.rating} count={pro.ratingCount} className="mt-1.5" />
                   {hintsFor(offer.id).length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
+                    <div className="mt-2.5 flex flex-wrap gap-1.5">
                       {hintsFor(offer.id).map((hint) => (
                         <Badge key={hint.key} tone={hint.tone}>
                           {hint.label}
@@ -186,34 +263,40 @@ export default async function RequestDetailPage({
                       ))}
                     </div>
                   )}
-                  <dl className="mt-3 space-y-2 border-t border-line pt-3 text-sm">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <dt className="shrink-0 text-xs text-muted">{t("compare.price")}</dt>
-                      <dd className="font-display text-xl font-bold tabular-nums">
-                        {offerPrice(offer)}
-                      </dd>
-                    </div>
-                    <div className="flex items-baseline justify-between gap-2">
+
+                  {/* Prix — hiérarchie principale */}
+                  <div className="mt-3 flex items-end justify-between gap-2 rounded-(--radius-field) bg-wash px-3.5 py-2.5">
+                    <span className="text-[0.7rem] font-medium uppercase tracking-wide text-faint">
+                      {t("compare.price")}
+                    </span>
+                    <span className="font-display text-2xl font-bold leading-none tabular-nums text-ink">
+                      {offerPrice(offer)}
+                    </span>
+                  </div>
+
+                  {/* Détails ligne/valeur */}
+                  <dl className="mt-3 divide-y divide-line border-t border-line text-sm">
+                    <div className="flex items-baseline justify-between gap-2 py-2">
                       <dt className="shrink-0 text-xs text-muted">{t("compare.availability")}</dt>
                       <dd className="text-right font-medium">{localized(offer.availability, locale)}</dd>
                     </div>
-                    <div className="flex items-baseline justify-between gap-2">
+                    <div className="flex items-baseline justify-between gap-2 py-2">
                       <dt className="shrink-0 text-xs text-muted">{t("compare.duration")}</dt>
                       <dd className="text-right font-medium">{localized(offer.duration, locale)}</dd>
                     </div>
-                    <div className="flex items-baseline justify-between gap-2">
+                    <div className="flex items-baseline justify-between gap-2 py-2">
                       <dt className="shrink-0 text-xs text-muted">{t("compare.distance")}</dt>
                       <dd className="text-right font-medium tabular-nums">
                         {tc("meta.distanceKm", { km: pro.distanceKm })}
                       </dd>
                     </div>
-                    <div className="flex items-baseline justify-between gap-2">
+                    <div className="flex items-baseline justify-between gap-2 py-2">
                       <dt className="shrink-0 text-xs text-muted">{t("compare.responseTime")}</dt>
                       <dd className="text-right font-medium tabular-nums">
                         {t("compare.respondedIn", { minutes: offer.respondedMin })}
                       </dd>
                     </div>
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center justify-between gap-2 py-2">
                       <dt className="shrink-0 text-xs text-muted">{t("compare.verifications")}</dt>
                       <dd className="inline-flex items-center gap-1.5">
                         <span className="inline-flex">
@@ -231,24 +314,30 @@ export default async function RequestDetailPage({
                       </dd>
                     </div>
                   </dl>
-                  <p className="mt-3 line-clamp-4 text-sm italic leading-relaxed text-muted">
+
+                  <blockquote className="mt-3 line-clamp-4 border-l-2 border-brand-100 pl-3 text-sm italic leading-relaxed text-muted">
                     {localized(offer.message, locale)}
-                  </p>
+                  </blockquote>
+
                   <div className="mt-auto flex flex-col gap-2 pt-4">
                     <Button type="button" className="w-full">
                       {t("compare.choose")}
                     </Button>
-                    <Button type="button" variant="ghost" className="w-full">
+                    <Button type="button" variant="outline" className="w-full">
+                      <MessageSquare className="size-4" aria-hidden />
                       {t("compare.message")}
                     </Button>
                   </div>
                 </Card>
               ))}
             </div>
-            <p className="mt-3 text-xs text-faint">{t("compare.disclaimer")}</p>
+            <p className="mt-4 inline-flex items-start gap-1.5 text-xs text-faint">
+              <Info className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+              {t("compare.disclaimer")}
+            </p>
           </section>
         ) : (
-          <section className="pt-12">
+          <section className="pt-12 animate-fade-up">
             <EmptyState
               icon={<MessageSquare aria-hidden />}
               title={t("offersReceived", { count: 0 })}

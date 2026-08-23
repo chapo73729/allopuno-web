@@ -6,7 +6,35 @@ import { Albert_Sans, Bricolage_Grotesque, Spline_Sans_Mono } from "next/font/go
 import { routing } from "@/i18n/routing";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { media } from "@/lib/media";
 import "../globals.css";
+
+const SITE_URL = "https://allopuno-web.vercel.app";
+
+const keywords: Record<string, string[]> = {
+  sq: [
+    "AlloPuno",
+    "shërbime Kosovë",
+    "mjeshtër Kosovë",
+    "qira Kosovë",
+    "profesionistë",
+    "elektricist",
+    "hidraulik",
+    "transport",
+    "Prishtinë"
+  ],
+  en: [
+    "AlloPuno",
+    "Kosovo services",
+    "handyman Kosovo",
+    "rentals Kosovo",
+    "local marketplace",
+    "professionals",
+    "electrician",
+    "plumber",
+    "Pristina"
+  ]
+};
 
 const albert = Albert_Sans({ subsets: ["latin"], variable: "--font-albert", display: "swap" });
 const bricolage = Bricolage_Grotesque({
@@ -32,14 +60,38 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "common" });
+  const title = `AlloPuno — ${t("brand.tagline")}`;
+  const description = t("brand.motto");
+  const ogLocale = locale === "en" ? "en_US" : "sq_AL";
+  const path = locale === "en" ? "/en" : "/";
+
   return {
+    metadataBase: new URL(SITE_URL),
+    applicationName: "AlloPuno",
     title: {
-      default: `AlloPuno — ${t("brand.tagline")}`,
+      default: title,
       template: "%s · AlloPuno"
     },
-    description: t("brand.motto"),
+    description,
+    keywords: keywords[locale] ?? keywords.sq,
     alternates: {
+      canonical: path,
       languages: { sq: "/", en: "/en" }
+    },
+    openGraph: {
+      type: "website",
+      siteName: "AlloPuno",
+      title,
+      description,
+      url: path,
+      locale: ogLocale,
+      images: [{ url: media.hero, width: 1200, height: 630, alt: title }]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [media.hero]
     }
   };
 }

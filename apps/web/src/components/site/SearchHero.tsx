@@ -32,7 +32,7 @@ export function SearchHero() {
 
   return (
     <form onSubmit={submit} className="w-full max-w-2xl">
-      <div className="flex items-center gap-2 rounded-2xl border border-line bg-card p-2 shadow-(--shadow-pop) focus-within:border-brand-400 focus-within:ring-4 focus-within:ring-brand-100">
+      <div className="flex items-center gap-2 rounded-2xl border border-line bg-card p-2 shadow-(--shadow-pop) transition-colors focus-within:border-brand-400 focus-within:ring-4 focus-within:ring-brand-100">
         <Sparkles className="ml-2 size-5 shrink-0 text-brand-500" aria-hidden />
         <input
           ref={inputRef}
@@ -48,7 +48,7 @@ export function SearchHero() {
         <button
           type="submit"
           aria-label={t("hero.publishCta")}
-          className="inline-flex h-12 shrink-0 items-center gap-2 rounded-xl bg-brand-600 px-4 font-medium text-white transition-colors hover:bg-brand-700 sm:px-6"
+          className="bg-brand-gradient inline-flex h-12 shrink-0 items-center gap-2 rounded-xl px-4 font-medium text-white shadow-(--shadow-brand) transition-[filter,transform] hover:brightness-110 active:scale-[0.98] sm:px-6"
         >
           <span className="hidden sm:inline">{t("hero.publishCta")}</span>
           <ArrowRight className="size-5" aria-hidden />
