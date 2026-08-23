@@ -8,6 +8,7 @@ import sqRequest from "./messages/sq/request.json";
 import sqAuth from "./messages/sq/auth.json";
 import sqRentals from "./messages/sq/rentals.json";
 import sqPages from "./messages/sq/pages.json";
+import sqWorkspace from "./messages/sq/workspace.json";
 
 import enCommon from "./messages/en/common.json";
 import enHome from "./messages/en/home.json";
@@ -19,6 +20,7 @@ import enRequest from "./messages/en/request.json";
 import enAuth from "./messages/en/auth.json";
 import enRentals from "./messages/en/rentals.json";
 import enPages from "./messages/en/pages.json";
+import enWorkspace from "./messages/en/workspace.json";
 
 export const locales = ["sq", "en"] as const;
 export type Locale = (typeof locales)[number];
@@ -35,7 +37,8 @@ const catalogs: Record<Locale, Record<string, unknown>> = {
     request: sqRequest,
     auth: sqAuth,
     rentals: sqRentals,
-    pages: sqPages
+    pages: sqPages,
+    workspace: sqWorkspace
   },
   en: {
     common: enCommon,
@@ -47,7 +50,8 @@ const catalogs: Record<Locale, Record<string, unknown>> = {
     request: enRequest,
     auth: enAuth,
     rentals: enRentals,
-    pages: enPages
+    pages: enPages,
+    workspace: enWorkspace
   }
 };
 
