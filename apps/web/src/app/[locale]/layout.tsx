@@ -6,6 +6,7 @@ import { Albert_Sans, Bricolage_Grotesque, Spline_Sans_Mono } from "next/font/go
 import { routing } from "@/i18n/routing";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { EngineBoot } from "@/components/site/EngineBoot";
 import { media } from "@/lib/media";
 import "../globals.css";
 
@@ -121,8 +122,9 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <div className="flex min-h-dvh flex-col">
             <SiteHeader />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 pb-16 md:pb-0">{children}</main>
             <SiteFooter />
+            <EngineBoot />
           </div>
         </NextIntlClientProvider>
       </body>

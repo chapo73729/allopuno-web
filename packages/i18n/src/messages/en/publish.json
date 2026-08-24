@@ -2,11 +2,19 @@
   "title": "Post a request",
   "subtitle": "Describe it freely — we take care of the rest.",
   "badge": "Free • No commission",
+  "steps": {
+    "progress": "Step {current} of {total}",
+    "describe": "Describe",
+    "understood": "Understood",
+    "date": "Date",
+    "budget": "Budget",
+    "photos": "Photos",
+    "summary": "Summary"
+  },
   "freeText": {
     "label": "What do you need?",
     "placeholder": "E.g. I need a plumber in Prishtina tomorrow...",
     "hint": "Write like you'd normally speak. We detect the category, place and date for you.",
-    "analyze": "Continue",
     "examplesLabel": "Try an example",
     "examples": [
       "I need a plumber in Prishtina tomorrow",
@@ -16,56 +24,83 @@
   },
   "understood": {
     "title": "Here's what we understood",
+    "subtitle": "Review and change anything — we'll fill in the rest together.",
+    "autoDetected": "Detected automatically",
     "yourText": "Your request",
     "edit": "Change",
     "category": "Category",
     "city": "City",
     "date": "Date",
-    "urgency": "Urgency",
     "budget": "Budget",
-    "missingCategory": "Choose a category",
-    "missingCity": "Where are you?"
+    "urgency": "Urgency",
+    "urgentHint": "Only professionals available right now are notified immediately",
+    "urgentYes": "Yes, urgent",
+    "urgentNo": "No, normal",
+    "missing": "Not detected — you'll pick it in the next step"
   },
-  "fields": {
-    "titleLabel": "Request title",
-    "description": "Description",
-    "subcategory": "Subcategory",
-    "photos": "Photos (optional)",
-    "addPhotos": "Add photos",
-    "photosHint": "Preview only — photos are not uploaded in the demo version.",
-    "removePhoto": "Remove photo",
-    "location": "Location",
-    "date": "When do you need it?",
-    "dateFlexible": "I'm flexible",
-    "budgetLabel": "Budget (optional)",
-    "budgetMin": "From (€)",
-    "budgetMax": "Up to (€)",
-    "visibility": "Visibility",
-    "visibilityPublic": "Public",
-    "visibilityPublicHint": "Relevant professionals are notified automatically",
-    "visibilityPrivate": "Private",
-    "visibilityPrivateHint": "Only professionals you pick",
-    "urgent": "Urgent",
-    "urgentHint": "Only professionals available right now are notified immediately"
+  "category": {
+    "title": "Choose a category",
+    "subtitle": "Which field does your request belong to?",
+    "subLabel": "More precisely (optional)",
+    "subAny": "Not sure"
+  },
+  "city": {
+    "title": "Where are you?",
+    "subtitle": "We only notify professionals in your city."
+  },
+  "date": {
+    "title": "When do you need it?",
+    "subtitle": "A rough idea is enough — you'll fine-tune the details with the professional later.",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "thisWeek": "This week",
+    "exact": "Exact date",
+    "unknown": "Not sure yet",
+    "pickDate": "Pick a date",
+    "timeLabel": "Time of day (optional)",
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "evening": "Evening"
+  },
+  "budget": {
+    "title": "What's your budget?",
+    "subtitle": "Optional — it helps professionals send more accurate offers.",
+    "unknown": "Not sure",
+    "under50": "Up to €50",
+    "range50to100": "€50–100",
+    "range100to250": "€100–250",
+    "range250to500": "€250–500",
+    "over500": "€500+",
+    "custom": "Custom",
+    "min": "From (€)",
+    "max": "Up to (€)",
+    "customRange": "€{min}–{max}",
+    "customMax": "Up to €{max}",
+    "customMin": "From €{min}"
+  },
+  "photos": {
+    "title": "Add photos (optional)",
+    "subtitle": "Photos help professionals understand the job right away.",
+    "add": "Add photos",
+    "hint": "Up to 10 photos. Demo version — only the number of photos is kept, not the photos themselves.",
+    "remove": "Remove photo",
+    "count": "{count, plural, =0 {No photos} =1 {1 photo} other {# photos}}"
+  },
+  "summary": {
+    "title": "Summary",
+    "subtitle": "Give it one last look before publishing.",
+    "request": "Request"
   },
   "submit": "Post request",
-  "success": {
-    "title": "Your request is live!",
-    "badge": "Sent",
-    "text": "Relevant professionals near you are being notified. Offers will appear here and you'll get a notification for each one.",
-    "nextTitle": "What happens next",
-    "next1": "Relevant professionals are notified right away.",
-    "next2": "Offers arrive within minutes.",
-    "next3": "You pick the best one — with no obligation.",
-    "viewRequest": "View your request",
-    "backHome": "Back to home",
-    "demoNote": "Demo version — your request is not saved yet."
+  "publishing": {
+    "title": "Finding available people...",
+    "text": "We're notifying the relevant professionals near you. Just a moment."
   },
-  "steps": {
-    "describe": "Describe",
-    "confirm": "Confirm",
-    "details": "Details",
-    "done": "Done",
-    "progress": "Step {current} of {total}"
+  "published": {
+    "badge": "Published",
+    "title": "Your request is live!",
+    "text": "Relevant professionals near you are being notified right now. First offers usually arrive within minutes — you'll get a notification for each one.",
+    "viewRequest": "View my request",
+    "backHome": "Back to home"
   }
 }

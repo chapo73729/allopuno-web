@@ -2,11 +2,19 @@
   "title": "Publiko kërkesën",
   "subtitle": "Përshkruaje lirshëm — ne kujdesemi për pjesën tjetër.",
   "badge": "Falas • Pa komision",
+  "steps": {
+    "progress": "Hapi {current} nga {total}",
+    "describe": "Përshkruaj",
+    "understood": "Kuptuam",
+    "date": "Data",
+    "budget": "Buxheti",
+    "photos": "Fotot",
+    "summary": "Përmbledhja"
+  },
   "freeText": {
     "label": "Çfarë të duhet?",
     "placeholder": "P.sh. Më duhet një hidraulik në Prishtinë nesër...",
     "hint": "Shkruaj si të flasësh normalisht. Kategorinë, vendin dhe datën i kuptojmë vetë.",
-    "analyze": "Vazhdo",
     "examplesLabel": "Provo një shembull",
     "examples": [
       "Më duhet një hidraulik në Prishtinë nesër",
@@ -16,56 +24,83 @@
   },
   "understood": {
     "title": "Ja çfarë kuptuam",
+    "subtitle": "Kontrollo dhe ndrysho çfarë të duash — pjesën tjetër e plotësojmë bashkë.",
+    "autoDetected": "Kuptuar automatikisht",
     "yourText": "Kërkesa jote",
     "edit": "Ndrysho",
     "category": "Kategoria",
     "city": "Qyteti",
     "date": "Data",
-    "urgency": "Urgjenca",
     "budget": "Buxheti",
-    "missingCategory": "Zgjidh kategorinë",
-    "missingCity": "Ku ndodhesh?"
+    "urgency": "Urgjenca",
+    "urgentHint": "Vetëm profesionistët e disponueshëm tani njoftohen menjëherë",
+    "urgentYes": "Po, urgjente",
+    "urgentNo": "Jo, normale",
+    "missing": "S'u kuptua — e zgjedh në hapin tjetër"
   },
-  "fields": {
-    "titleLabel": "Titulli i kërkesës",
-    "description": "Përshkrimi",
-    "subcategory": "Nënkategoria",
-    "photos": "Fotot (opsionale)",
-    "addPhotos": "Shto foto",
-    "photosHint": "Vetëm pamje paraprake — në versionin demo fotot nuk ngarkohen.",
-    "removePhoto": "Hiq foton",
-    "location": "Vendndodhja",
-    "date": "Kur të duhet?",
-    "dateFlexible": "Jam fleksibël",
-    "budgetLabel": "Buxheti (opsional)",
-    "budgetMin": "Nga (€)",
-    "budgetMax": "Deri (€)",
-    "visibility": "Dukshmëria",
-    "visibilityPublic": "Publike",
-    "visibilityPublicHint": "Profesionistët përkatës njoftohen automatikisht",
-    "visibilityPrivate": "Private",
-    "visibilityPrivateHint": "Vetëm profesionistët që zgjedh ti",
-    "urgent": "Urgjente",
-    "urgentHint": "Vetëm profesionistët e disponueshëm tani njoftohen menjëherë"
+  "category": {
+    "title": "Zgjidh kategorinë",
+    "subtitle": "Cilës fushë i takon kërkesa jote?",
+    "subLabel": "Më saktësisht (opsionale)",
+    "subAny": "S'jam i sigurt"
+  },
+  "city": {
+    "title": "Ku ndodhesh?",
+    "subtitle": "Njoftojmë vetëm profesionistët e qytetit tënd."
+  },
+  "date": {
+    "title": "Kur të duhet?",
+    "subtitle": "Një orientim mjafton — detajet i saktëson më vonë me profesionistin.",
+    "today": "Sot",
+    "tomorrow": "Nesër",
+    "thisWeek": "Këtë javë",
+    "exact": "Datë e saktë",
+    "unknown": "S'e di ende",
+    "pickDate": "Zgjidh datën",
+    "timeLabel": "Pjesa e ditës (opsionale)",
+    "morning": "Paradite",
+    "afternoon": "Pasdite",
+    "evening": "Mbrëmje"
+  },
+  "budget": {
+    "title": "Sa e ke buxhetin?",
+    "subtitle": "Opsionale — i ndihmon profesionistët të japin oferta më të sakta.",
+    "unknown": "S'e di",
+    "under50": "Deri në 50 €",
+    "range50to100": "50–100 €",
+    "range100to250": "100–250 €",
+    "range250to500": "250–500 €",
+    "over500": "500 € e lart",
+    "custom": "I personalizuar",
+    "min": "Nga (€)",
+    "max": "Deri (€)",
+    "customRange": "{min}–{max} €",
+    "customMax": "Deri në {max} €",
+    "customMin": "Nga {min} €"
+  },
+  "photos": {
+    "title": "Shto foto (opsionale)",
+    "subtitle": "Fotot i ndihmojnë profesionistët ta kuptojnë punën që në fillim.",
+    "add": "Shto foto",
+    "hint": "Deri në 10 foto. Version demo — ruhet vetëm numri i fotove, jo vetë fotot.",
+    "remove": "Hiq foton",
+    "count": "{count, plural, =0 {Pa foto} =1 {1 foto} other {# foto}}"
+  },
+  "summary": {
+    "title": "Përmbledhja",
+    "subtitle": "Kontrolloje edhe një herë para se ta publikosh.",
+    "request": "Kërkesa"
   },
   "submit": "Publiko kërkesën",
-  "success": {
-    "title": "Kërkesa u publikua!",
-    "badge": "U dërgua",
-    "text": "Profesionistët përkatës pranë teje po njoftohen. Ofertat do të shfaqen këtu dhe do të marrësh njoftim për secilën.",
-    "nextTitle": "Çfarë ndodh tani",
-    "next1": "Profesionistët përkatës njoftohen menjëherë.",
-    "next2": "Ofertat mbërrijnë brenda pak minutash.",
-    "next3": "Zgjedh më të mirin — pa asnjë detyrim.",
-    "viewRequest": "Shiko kërkesën tënde",
-    "backHome": "Kthehu në ballinë",
-    "demoNote": "Version demo — kërkesa nuk ruhet ende."
+  "publishing": {
+    "title": "Po kërkojmë personat e disponueshëm...",
+    "text": "Po njoftojmë profesionistët përkatës pranë teje. Vetëm një moment."
   },
-  "steps": {
-    "describe": "Përshkruaj",
-    "confirm": "Konfirmo",
-    "details": "Detajet",
-    "done": "Gati",
-    "progress": "Hapi {current} nga {total}"
+  "published": {
+    "badge": "U publikua",
+    "title": "Kërkesa u publikua!",
+    "text": "Profesionistët përkatës pranë teje po njoftohen tani. Ofertat e para zakonisht mbërrijnë brenda pak minutash — merr njoftim për secilën.",
+    "viewRequest": "Shiko kërkesën time",
+    "backHome": "Kthehu në ballinë"
   }
 }

@@ -5,12 +5,15 @@ import { useTranslations } from "next-intl";
 import { Menu, Plus, X } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/Button";
+import { useUnreadCounts } from "@/lib/engine";
 import { cn } from "@/lib/cn";
 import { Wordmark } from "./Wordmark";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 export function SiteHeader() {
   const t = useTranslations("common");
+  const tw = useTranslations("workspace");
+  const counts = useUnreadCounts();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -26,6 +29,12 @@ export function SiteHeader() {
     { href: "/sherbime", label: t("nav.services") },
     { href: "/qira", label: t("nav.rentals") },
     { href: "/kerko", label: t("nav.search") }
+  ];
+
+  // Espace personnel : liens discrets + badge non-lus sur Mesazhet.
+  const workspaceItems = [
+    { href: "/kerkesat", label: tw("nav.requests"), badge: 0 },
+    { href: "/mesazhet", label: tw("nav.messages"), badge: counts.messages }
   ];
 
   return (
@@ -54,6 +63,25 @@ export function SiteHeader() {
               className="rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-wash hover:text-ink"
             >
               {item.label}
+            </Link>
+          ))}
+          <span className="mx-1 h-4 w-px bg-line" aria-hidden />
+          {workspaceItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-label={item.badge > 0 ? `${item.label} (${item.badge})` : undefined}
+              className="rounded-lg px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-wash hover:text-ink"
+            >
+              {item.label}
+              {item.badge > 0 && (
+                <span
+                  aria-hidden
+                  className="ml-1.5 inline-flex min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-semibold leading-4 text-white align-middle"
+                >
+                  {item.badge > 9 ? "9+" : item.badge}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -95,6 +123,25 @@ export function SiteHeader() {
                 className="rounded-lg px-3 py-3 text-base font-medium text-ink transition-colors hover:bg-wash"
               >
                 {item.label}
+              </Link>
+            ))}
+            {workspaceItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                aria-label={item.badge > 0 ? `${item.label} (${item.badge})` : undefined}
+                className="flex items-center gap-2 rounded-lg px-3 py-3 text-base font-medium text-ink transition-colors hover:bg-wash"
+              >
+                {item.label}
+                {item.badge > 0 && (
+                  <span
+                    aria-hidden
+                    className="inline-flex min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-semibold leading-4 text-white"
+                  >
+                    {item.badge > 9 ? "9+" : item.badge}
+                  </span>
+                )}
               </Link>
             ))}
             <Link

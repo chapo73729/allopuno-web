@@ -1,790 +1,702 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ChangeEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
   ArrowLeft,
   ArrowRight,
-  BadgeCheck,
-  Bell,
-  CalendarDays,
+  Calendar,
   Camera,
   Check,
   CheckCircle2,
-  ChevronDown,
-  Eye,
-  ImagePlus,
-  Loader2,
+  Coins,
   MapPin,
-  MessagesSquare,
-  Send,
+  Pencil,
+  Plus,
   Sparkles,
-  Tag,
   Wallet,
   X,
   Zap
 } from "lucide-react";
-import { cities, findCategory, serviceCategories } from "@allopuno/data";
-import { Link } from "@/i18n/navigation";
+import { categories, cities, findCategory } from "@allopuno/data";
+import { Link, useRouter } from "@/i18n/navigation";
+import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field, Input, Textarea } from "@/components/ui/Input";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { cn } from "@/lib/cn";
+import { publishRequest } from "@/lib/engine";
 import { cityName, localized } from "@/lib/format";
-import { parseRequestText } from "@/lib/parse";
+import { parseRequestText, type ParsedRequest } from "@/lib/parse";
 
 /**
- * Wizard de publication en 3 étapes (CDC : publication < 60 s) :
- * Përshkruaj → Konfirmo → Sukses. v1 vitrine : le parsing est un stub client
- * (lib/parse.ts) et « Publiko » ne fait que simuler — aucun backend.
+ * Wizard de publication (spec v2, écrans 007→016) :
+ * Përshkruaj → Kuptuam (IA + corrections) → Data → Buxheti → Fotot →
+ * Përmbledhja → animation « po kërkojmë » → U publikua.
+ * Publication réelle dans le moteur client (localStorage) : la demande vit
+ * ensuite dans /kerkesat, où les offres simulées arrivent en direct.
  */
 
-type Step = "describe" | "confirm" | "success";
+type StepKey = "describe" | "understood" | "date" | "budget" | "photos" | "summary";
+const STEPS: StepKey[] = ["describe", "understood", "date", "budget", "photos", "summary"];
 
-interface FormState {
-  title: string;
-  description: string;
-  categorySlug: string;
-  subSlug: string;
-  citySlug: string;
-  date: string;
-  flexible: boolean;
-  urgent: boolean;
-  budgetMin: string;
-  budgetMax: string;
-  visibility: "public" | "private";
-}
+type Phase = "form" | "publishing" | "published";
+type BudgetChoice = "unknown" | "u50" | "b50" | "b100" | "b250" | "o500" | "custom";
+type DateChoice = "sot" | "neser" | "kete-jave" | "exact" | "s-e-di";
 
-interface PhotoPreview {
-  id: string;
-  url: string;
-  name: string;
-}
+const BUDGETS: Array<{ key: BudgetChoice; min?: number; max?: number }> = [
+  { key: "unknown" },
+  { key: "u50", max: 50 },
+  { key: "b50", min: 50, max: 100 },
+  { key: "b100", min: 100, max: 250 },
+  { key: "b250", min: 250, max: 500 },
+  { key: "o500", min: 500 },
+  { key: "custom" }
+];
 
-const MAX_PHOTOS = 6;
-
-const selectClasses =
-  "h-12 w-full appearance-none rounded-(--radius-field) border border-line bg-card px-3.5 pr-10 text-[0.95rem] text-ink transition-colors focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100";
-
-function emptyForm(): FormState {
-  return {
-    title: "",
-    description: "",
-    categorySlug: "",
-    subSlug: "",
-    citySlug: "",
-    date: "",
-    flexible: true,
-    urgent: false,
-    budgetMin: "",
-    budgetMax: "",
-    visibility: "public"
-  };
-}
-
-/** Habillage d'un <select> natif : ajoute le chevron cohérent du design system. */
-function SelectShell({ children }: { children: ReactNode }) {
-  return (
-    <div className="relative">
-      {children}
-      <ChevronDown
-        className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-faint"
-        aria-hidden
-      />
-    </div>
-  );
-}
-
-/** Petite pastille d'icône pour rythmer les lignes du récapitulatif. */
-function RowIcon({ children }: { children: ReactNode }) {
-  return (
-    <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-      {children}
-    </span>
-  );
-}
-
-/** Interrupteur accessible (role=switch) avec zone tactile ≥ 44 px. */
-function Switch({
-  checked,
-  onChange,
-  label
-}: {
-  checked: boolean;
-  onChange: (next: boolean) => void;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      onClick={() => onChange(!checked)}
-      className="-m-2 shrink-0 p-2"
-    >
-      <span
-        className={cn(
-          "relative block h-7 w-12 rounded-full transition-colors",
-          checked ? "bg-brand-600" : "bg-line"
-        )}
-        aria-hidden
-      >
-        <span
-          className={cn(
-            "absolute top-1 size-5 rounded-full bg-white shadow-sm transition-all",
-            checked ? "left-6" : "left-1"
-          )}
-        />
-      </span>
-    </button>
-  );
-}
-
-/** Ligne « détecté » : valeur comprise + bouton Ndrysho pour l'éditer. */
-function DetectedRow({
-  icon,
-  label,
-  value,
-  editLabel,
-  onEdit
-}: {
-  icon: ReactNode;
-  label: string;
-  value: string;
-  editLabel: string;
-  onEdit: () => void;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-3">
-      <div className="flex min-w-0 items-center gap-3">
-        <RowIcon>{icon}</RowIcon>
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-ink">{label}</p>
-          <p className="mt-0.5 flex items-center gap-1.5 text-[0.95rem] text-muted">
-            <CheckCircle2 className="size-4 shrink-0 text-success" aria-hidden />
-            <span className="truncate">{value}</span>
-          </p>
-        </div>
-      </div>
-      <Button variant="ghost" size="sm" onClick={onEdit} className="shrink-0 text-brand-700">
-        {editLabel}
-      </Button>
-    </div>
-  );
-}
+const BUDGET_LABEL_KEY: Record<BudgetChoice, string> = {
+  unknown: "unknown",
+  u50: "under50",
+  b50: "range50to100",
+  b100: "range100to250",
+  b250: "range250to500",
+  o500: "over500",
+  custom: "custom"
+};
 
 export function PublishFlow() {
   const t = useTranslations("publish");
   const tc = useTranslations("common");
   const locale = useLocale();
+  const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [step, setStep] = useState<Step>("describe");
-  const [text, setText] = useState(() => searchParams.get("q") ?? "");
-  const [form, setForm] = useState<FormState>(emptyForm);
-  const [editCategory, setEditCategory] = useState(false);
-  const [editCity, setEditCity] = useState(false);
-  const [photos, setPhotos] = useState<PhotoPreview[]>([]);
-  const [publishing, setPublishing] = useState(false);
+  const [phase, setPhase] = useState<Phase>("form");
+  const [step, setStep] = useState(0);
 
-  const publishTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const photosRef = useRef<PhotoPreview[]>([]);
+  const [text, setText] = useState("");
+  const [parsed, setParsed] = useState<ParsedRequest | null>(null);
+  const [categorySlug, setCategorySlug] = useState("");
+  const [subSlug, setSubSlug] = useState("");
+  const [citySlug, setCitySlug] = useState("");
+  const [urgent, setUrgent] = useState(false);
+  const [dateChoice, setDateChoice] = useState<DateChoice>("s-e-di");
+  const [exactDate, setExactDate] = useState("");
+  const [timeChoice, setTimeChoice] = useState("");
+  const [budgetChoice, setBudgetChoice] = useState<BudgetChoice>("unknown");
+  const [budgetMin, setBudgetMin] = useState("");
+  const [budgetMax, setBudgetMax] = useState("");
+  const [photos, setPhotos] = useState<string[]>([]);
+  const [publishedId, setPublishedId] = useState("");
+  const photosRef = useRef<string[]>([]);
+  photosRef.current = photos;
 
+  // Pré-remplissage depuis ?q= (barre héro de l'accueil).
   useEffect(() => {
-    photosRef.current = photos;
-  }, [photos]);
+    const q = searchParams.get("q");
+    if (q) setText(q);
+  }, [searchParams]);
 
-  // Nettoyage : aperçus locaux (les fichiers ne sont jamais envoyés) + timer.
-  useEffect(() => {
-    return () => {
-      photosRef.current.forEach((p) => URL.revokeObjectURL(p.url));
-      if (publishTimer.current) clearTimeout(publishTimer.current);
-    };
-  }, []);
+  // Nettoyage des aperçus photo (URLs objet locales).
+  useEffect(() => () => photosRef.current.forEach((url) => URL.revokeObjectURL(url)), []);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, [step]);
-
-  const todayIso = useMemo(() => {
-    const now = new Date();
-    const month = `${now.getMonth() + 1}`.padStart(2, "0");
-    const day = `${now.getDate()}`.padStart(2, "0");
-    return `${now.getFullYear()}-${month}-${day}`;
-  }, []);
-
-  // Le stub peut détecter une catégorie « qira » : on l'ajoute aux options.
-  const categoryOptions = useMemo(() => {
-    const base = [...serviceCategories];
-    if (form.categorySlug && !base.some((c) => c.slug === form.categorySlug)) {
-      const extra = findCategory(form.categorySlug);
-      if (extra) base.push(extra);
-    }
-    return base;
-  }, [form.categorySlug]);
-
-  const selectedCategory = form.categorySlug ? findCategory(form.categorySlug) : undefined;
-  const selectedSub = selectedCategory?.children.find((s) => s.slug === form.subSlug);
-
-  const categoryValueLabel = selectedCategory
-    ? selectedSub
-      ? `${localized(selectedCategory.name, locale)} · ${localized(selectedSub.name, locale)}`
-      : localized(selectedCategory.name, locale)
-    : "";
-
-  const canPublish = Boolean(form.categorySlug && form.citySlug);
-
-  const examples = t.raw("freeText.examples") as string[];
-
-  function patch(partial: Partial<FormState>) {
-    setForm((prev) => ({ ...prev, ...partial }));
-  }
+  const category = categorySlug ? findCategory(categorySlug) : undefined;
 
   function analyze() {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    const parsed = parseRequestText(trimmed);
-    setForm({
-      title: parsed.title,
-      description: trimmed,
-      categorySlug: parsed.categorySlug ?? "",
-      subSlug: parsed.subSlug ?? "",
-      citySlug: parsed.citySlug ?? "",
-      date: parsed.dateHint ?? "",
-      flexible: !parsed.dateHint,
-      urgent: parsed.urgent,
-      budgetMin: parsed.budgetMin != null ? String(parsed.budgetMin) : "",
-      budgetMax: parsed.budgetMax != null ? String(parsed.budgetMax) : "",
-      visibility: "public"
-    });
-    // Ne redemander que ce qui manque : le reste s'affiche déjà rempli.
-    setEditCategory(!parsed.categorySlug);
-    setEditCity(!parsed.citySlug);
-    setStep("confirm");
-  }
-
-  function onPhotosSelected(event: ChangeEvent<HTMLInputElement>) {
-    const remaining = Math.max(0, MAX_PHOTOS - photos.length);
-    const files = Array.from(event.target.files ?? []).slice(0, remaining);
-    if (files.length > 0) {
-      const next = files.map((file, index) => ({
-        id: `${Date.now()}-${index}-${file.name}`,
-        url: URL.createObjectURL(file),
-        name: file.name
-      }));
-      setPhotos((prev) => [...prev, ...next]);
+    const result = parseRequestText(text);
+    setParsed(result);
+    setCategorySlug(result.categorySlug ?? "");
+    setSubSlug(result.subSlug ?? "");
+    setCitySlug(result.citySlug ?? "");
+    setUrgent(result.urgent);
+    if (result.dateHint) {
+      setDateChoice("exact");
+      setExactDate(result.dateHint);
     }
-    event.target.value = "";
+    if (result.budgetMin !== undefined || result.budgetMax !== undefined) {
+      setBudgetChoice("custom");
+      setBudgetMin(result.budgetMin !== undefined ? String(result.budgetMin) : "");
+      setBudgetMax(result.budgetMax !== undefined ? String(result.budgetMax) : "");
+    }
+    setStep(1);
   }
 
-  function removePhoto(id: string) {
-    setPhotos((prev) => {
-      const removed = prev.find((p) => p.id === id);
-      if (removed) URL.revokeObjectURL(removed.url);
-      return prev.filter((p) => p.id !== id);
-    });
+  const budgetValues = useMemo((): { min?: number; max?: number } => {
+    if (budgetChoice === "custom") {
+      const min = budgetMin ? Number(budgetMin) : undefined;
+      const max = budgetMax ? Number(budgetMax) : undefined;
+      return { min: Number.isFinite(min) ? min : undefined, max: Number.isFinite(max) ? max : undefined };
+    }
+    const preset = BUDGETS.find((b) => b.key === budgetChoice);
+    return { min: preset?.min, max: preset?.max };
+  }, [budgetChoice, budgetMin, budgetMax]);
+
+  function budgetLabel(): string {
+    if (budgetChoice === "custom") {
+      const { min, max } = budgetValues;
+      if (min !== undefined && max !== undefined) return t("budget.customRange", { min, max });
+      if (max !== undefined) return t("budget.customMax", { max });
+      if (min !== undefined) return t("budget.customMin", { min });
+      return t("budget.unknown");
+    }
+    return t(`budget.${BUDGET_LABEL_KEY[budgetChoice]}` as never);
+  }
+
+  function dateLabel(): string {
+    if (dateChoice === "exact" && exactDate) return exactDate;
+    const map: Record<DateChoice, string> = {
+      sot: "today",
+      neser: "tomorrow",
+      "kete-jave": "thisWeek",
+      exact: "exact",
+      "s-e-di": "unknown"
+    };
+    const base = t(`date.${map[dateChoice]}` as never);
+    if (!timeChoice) return base;
+    return `${base} · ${t(`date.${timeChoice}` as never)}`;
+  }
+
+  function addPhotos(files: FileList | null) {
+    if (!files) return;
+    const urls = Array.from(files)
+      .slice(0, 10 - photos.length)
+      .map((f) => URL.createObjectURL(f));
+    setPhotos((prev) => [...prev, ...urls].slice(0, 10));
   }
 
   function publish() {
-    if (!canPublish || publishing) return;
-    setPublishing(true);
-    // Simulation v1 vitrine : aucun appel réseau, la kërkesa n'est pas enregistrée.
-    publishTimer.current = setTimeout(() => {
-      setPublishing(false);
-      setStep("success");
-    }, 700);
+    setPhase("publishing");
+    const id = publishRequest({
+      title: parsed?.title || text.trim().slice(0, 70),
+      description: text.trim(),
+      categorySlug: categorySlug || undefined,
+      subSlug: subSlug || undefined,
+      citySlug: citySlug || undefined,
+      dateChoice: dateChoice === "exact" ? exactDate || "s-e-di" : dateChoice,
+      timeChoice: timeChoice || undefined,
+      urgent,
+      budgetMin: budgetValues.min,
+      budgetMax: budgetValues.max,
+      photosCount: photos.length
+    });
+    setPublishedId(id);
+    window.setTimeout(() => setPhase("published"), 1900);
   }
 
-  const stepIndex = step === "describe" ? 0 : step === "confirm" ? 1 : 2;
-  const stepLabels = [t("steps.describe"), t("steps.confirm"), t("steps.done")];
+  const canContinue =
+    step === 0
+      ? text.trim().length >= 8
+      : step === 1
+        ? Boolean(categorySlug && citySlug)
+        : step === 2
+          ? dateChoice !== "exact" || Boolean(exactDate)
+          : true;
+
+  /* ────────────────────── Phases publication / publiée ────────────────────── */
+
+  if (phase === "publishing") {
+    return (
+      <div className="animate-fade-in flex flex-col items-center py-16 text-center">
+        <span className="relative flex size-20 items-center justify-center" aria-hidden>
+          <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand-200 opacity-60" />
+          <span className="relative inline-flex size-16 items-center justify-center rounded-full bg-brand-600 text-white shadow-(--shadow-brand)">
+            <Sparkles className="size-7" />
+          </span>
+        </span>
+        <h1 className="mt-6 font-display text-2xl font-bold">{t("publishing.title")}</h1>
+        <p className="mt-2 max-w-sm text-muted">{t("publishing.text")}</p>
+      </div>
+    );
+  }
+
+  if (phase === "published") {
+    return (
+      <div className="animate-fade-up flex flex-col items-center py-10 text-center">
+        <span className="inline-flex size-16 items-center justify-center rounded-full bg-success-soft text-success">
+          <CheckCircle2 className="size-8" aria-hidden />
+        </span>
+        <Badge tone="success" className="mt-4">{t("published.badge")}</Badge>
+        <h1 className="mt-3 font-display text-3xl font-extrabold">{t("published.title")}</h1>
+        <p className="mt-3 max-w-md text-muted">{t("published.text")}</p>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Button as={Link} href={`/kerkesat/${publishedId}`} size="lg">
+            {t("published.viewRequest")}
+            <ArrowRight className="size-5" aria-hidden />
+          </Button>
+          <Button as={Link} href="/" variant="outline" size="lg">
+            {t("published.backHome")}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  /* ─────────────────────────────── Formulaire ─────────────────────────────── */
 
   return (
-    <div>
+    <div className="animate-fade-up">
       <header className="text-center">
-        {step === "describe" && (
-          <span className="animate-fade-in mb-4 inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
-            <Sparkles className="size-3.5" aria-hidden />
-            {t("badge")}
-          </span>
-        )}
-        <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+        <Badge tone="success">{t("badge")}</Badge>
+        <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
           {t("title")}
         </h1>
-        {step === "describe" && <p className="mt-2 text-muted">{t("subtitle")}</p>}
       </header>
 
       {/* Indicateur d'étapes */}
-      <nav aria-label={t("title")} className="mt-7">
-        <p className="mb-3 text-center text-xs font-medium uppercase tracking-wide text-faint">
-          {t("steps.progress", { current: stepIndex + 1, total: stepLabels.length })}
-        </p>
-        <ol className="flex items-center justify-center">
-          {stepLabels.map((label, i) => {
-            const done = i < stepIndex;
-            const current = i === stepIndex;
-            return (
-              <li key={label} className="flex items-center" aria-current={current ? "step" : undefined}>
-                {i > 0 && (
-                  <span
-                    className={cn(
-                      "mx-2 h-0.5 w-7 rounded-full transition-colors sm:mx-3 sm:w-12",
-                      i <= stepIndex ? "bg-brand-500" : "bg-line"
-                    )}
-                    aria-hidden
-                  />
-                )}
-                <span className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "inline-flex size-8 items-center justify-center rounded-full text-sm font-bold transition-all",
-                      done && "bg-brand-600 text-white",
-                      current && "bg-brand-600 text-white shadow-(--shadow-brand) ring-4 ring-brand-100",
-                      !done && !current && "bg-wash text-faint"
-                    )}
-                  >
-                    {done ? <Check className="size-4" aria-hidden /> : i + 1}
-                  </span>
-                  <span
-                    className={cn(
-                      "text-sm font-medium",
-                      current ? "inline text-ink" : "hidden text-faint sm:inline"
-                    )}
-                  >
-                    {label}
-                  </span>
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+      <div className="mt-6">
+        <div className="flex items-center justify-between text-xs font-medium text-muted">
+          <span>{t("steps.progress", { current: step + 1, total: STEPS.length })}</span>
+          <span className="text-brand-700">{t(`steps.${STEPS[step]}` as never)}</span>
+        </div>
+        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-wash" role="presentation">
+          <div
+            className="bg-brand-gradient h-full rounded-full transition-all duration-500"
+            style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
+          />
+        </div>
+      </div>
 
-      {/* ÉTAPE 1 — Përshkruaj */}
-      {step === "describe" && (
-        <Card className="animate-fade-up mt-8 p-4 sm:p-6">
-          <Field label={t("freeText.label")} htmlFor="publiko-text" hint={t("freeText.hint")}>
-            <Textarea
-              id="publiko-text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder={t("freeText.placeholder")}
-              rows={5}
-              className="min-h-36 text-base"
-              autoComplete="off"
-            />
-          </Field>
+      <Card className="mt-6 p-5 sm:p-7">
+        {/* ÉTAPE 1 — Décrire (écran 007) */}
+        {step === 0 && (
+          <div className="flex flex-col gap-4">
+            <Field label={t("freeText.label")} hint={t("freeText.hint")} htmlFor="pub-text">
+              <Textarea
+                id="pub-text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder={t("freeText.placeholder")}
+                className="min-h-36 text-base"
+                autoFocus
+              />
+            </Field>
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-faint">
+                {t("freeText.examplesLabel")}
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {(t.raw("freeText.examples") as string[]).map((example) => (
+                  <button
+                    key={example}
+                    type="button"
+                    onClick={() => setText(example)}
+                    className="rounded-full border border-line bg-paper px-3 py-1.5 text-xs text-muted transition-colors hover:border-brand-300 hover:text-brand-700"
+                  >
+                    {example}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
-          {/* Exemples cliquables — remplissent le champ, aucun envoi */}
-          <div className="mt-4">
-            <p className="text-xs font-medium text-faint">{t("freeText.examplesLabel")}</p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {examples.map((example) => (
-                <button
-                  key={example}
-                  type="button"
-                  onClick={() => setText(example)}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1.5 text-left text-xs font-medium text-muted transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700"
+        {/* ÉTAPE 2 — Kuptuam (écran 008/009/010 : IA + corrections) */}
+        {step === 1 && (
+          <div className="flex flex-col gap-5">
+            <div>
+              <div className="flex items-center gap-2">
+                <Sparkles className="size-5 text-brand-600" aria-hidden />
+                <h2 className="font-display text-xl font-bold">{t("understood.title")}</h2>
+              </div>
+              <p className="mt-1 text-sm text-muted">{t("understood.subtitle")}</p>
+            </div>
+
+            <blockquote className="rounded-(--radius-field) border-l-2 border-brand-300 bg-wash px-4 py-3 text-sm italic text-muted">
+              {text}
+            </blockquote>
+
+            <Field label={t("understood.category")} htmlFor="pub-cat">
+              <div className="flex flex-col gap-2">
+                <select
+                  id="pub-cat"
+                  value={categorySlug}
+                  onChange={(e) => {
+                    setCategorySlug(e.target.value);
+                    setSubSlug("");
+                  }}
+                  className="h-11 w-full rounded-(--radius-field) border border-line bg-card px-3 text-[0.95rem] focus:border-brand-400 focus:outline-none"
                 >
-                  <Sparkles className="size-3.5 shrink-0 text-brand-400" aria-hidden />
-                  {example}
+                  <option value="">{t("category.title")}</option>
+                  {categories.map((c) => (
+                    <option key={c.slug} value={c.slug}>
+                      {localized(c.name, locale)}
+                    </option>
+                  ))}
+                </select>
+                {parsed?.categorySlug && categorySlug === parsed.categorySlug ? (
+                  <span className="inline-flex items-center gap-1 self-start rounded-full bg-brand-50 px-2 py-0.5 text-[0.7rem] font-medium text-brand-700">
+                    <Check className="size-3" aria-hidden />
+                    {t("understood.autoDetected")}
+                  </span>
+                ) : !categorySlug ? (
+                  <span className="text-xs text-warning">{t("understood.missing")}</span>
+                ) : null}
+              </div>
+            </Field>
+
+            {category && category.children.length > 0 && (
+              <Field label={t("category.subLabel")} htmlFor="pub-sub">
+                <select
+                  id="pub-sub"
+                  value={subSlug}
+                  onChange={(e) => setSubSlug(e.target.value)}
+                  className="h-11 w-full rounded-(--radius-field) border border-line bg-card px-3 text-[0.95rem] focus:border-brand-400 focus:outline-none"
+                >
+                  <option value="">{t("category.subAny")}</option>
+                  {category.children.map((s) => (
+                    <option key={s.slug} value={s.slug}>
+                      {localized(s.name, locale)}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            )}
+
+            <Field label={t("understood.city")} htmlFor="pub-city">
+              <div className="flex flex-col gap-2">
+                <select
+                  id="pub-city"
+                  value={citySlug}
+                  onChange={(e) => setCitySlug(e.target.value)}
+                  className="h-11 w-full rounded-(--radius-field) border border-line bg-card px-3 text-[0.95rem] focus:border-brand-400 focus:outline-none"
+                >
+                  <option value="">{t("city.title")}</option>
+                  {cities.map((c) => (
+                    <option key={c.slug} value={c.slug}>
+                      {localized(c.name, locale)}
+                    </option>
+                  ))}
+                </select>
+                {parsed?.citySlug && citySlug === parsed.citySlug ? (
+                  <span className="inline-flex items-center gap-1 self-start rounded-full bg-brand-50 px-2 py-0.5 text-[0.7rem] font-medium text-brand-700">
+                    <Check className="size-3" aria-hidden />
+                    {t("understood.autoDetected")}
+                  </span>
+                ) : !citySlug ? (
+                  <span className="text-xs text-warning">{t("understood.missing")}</span>
+                ) : null}
+              </div>
+            </Field>
+
+            <div className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium">{t("understood.urgency")}</span>
+              <div className="grid grid-cols-2 gap-2" role="group" aria-label={t("understood.urgency")}>
+                <button
+                  type="button"
+                  aria-pressed={!urgent}
+                  onClick={() => setUrgent(false)}
+                  className={cn(
+                    "h-11 rounded-(--radius-field) border text-sm font-medium transition-colors",
+                    !urgent ? "border-brand-400 bg-brand-50 text-brand-700" : "border-line bg-card text-muted"
+                  )}
+                >
+                  {t("understood.urgentNo")}
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={urgent}
+                  onClick={() => setUrgent(true)}
+                  className={cn(
+                    "inline-flex h-11 items-center justify-center gap-1.5 rounded-(--radius-field) border text-sm font-medium transition-colors",
+                    urgent ? "border-danger bg-danger-soft text-danger" : "border-line bg-card text-muted"
+                  )}
+                >
+                  <Zap className="size-4" aria-hidden />
+                  {t("understood.urgentYes")}
+                </button>
+              </div>
+              <p className="text-xs text-muted">{t("understood.urgentHint")}</p>
+            </div>
+          </div>
+        )}
+
+        {/* ÉTAPE 3 — Data (écran 011) */}
+        {step === 2 && (
+          <div className="flex flex-col gap-5">
+            <div>
+              <div className="flex items-center gap-2">
+                <Calendar className="size-5 text-brand-600" aria-hidden />
+                <h2 className="font-display text-xl font-bold">{t("date.title")}</h2>
+              </div>
+              <p className="mt-1 text-sm text-muted">{t("date.subtitle")}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3" role="group" aria-label={t("date.title")}>
+              {(
+                [
+                  ["sot", "today"],
+                  ["neser", "tomorrow"],
+                  ["kete-jave", "thisWeek"],
+                  ["exact", "exact"],
+                  ["s-e-di", "unknown"]
+                ] as Array<[DateChoice, string]>
+              ).map(([value, key]) => (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={dateChoice === value}
+                  onClick={() => setDateChoice(value)}
+                  className={cn(
+                    "h-11 rounded-(--radius-field) border text-sm font-medium transition-colors",
+                    dateChoice === value
+                      ? "border-brand-400 bg-brand-50 text-brand-700"
+                      : "border-line bg-card text-muted hover:border-brand-200"
+                  )}
+                >
+                  {t(`date.${key}` as never)}
                 </button>
               ))}
             </div>
-          </div>
-
-          <div className="mt-5 flex justify-end">
-            <Button
-              size="lg"
-              onClick={analyze}
-              disabled={!text.trim()}
-              className="w-full sm:w-auto"
-            >
-              {t("freeText.analyze")}
-              <ArrowRight className="size-5" aria-hidden />
-            </Button>
-          </div>
-        </Card>
-      )}
-
-      {/* ÉTAPE 2 — Konfirmo */}
-      {step === "confirm" && (
-        <div className="animate-fade-up mt-8">
-          <Card className="overflow-hidden">
-            <div className="relative overflow-hidden border-b border-line bg-hero-wash px-4 py-4 sm:px-6">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex size-10 items-center justify-center rounded-xl bg-brand-600 text-white shadow-(--shadow-brand)">
-                  <Sparkles className="size-5" aria-hidden />
-                </span>
-                <h2 className="font-display text-lg font-semibold">{t("understood.title")}</h2>
-              </div>
-            </div>
-
-            {/* Rappel de ce qui a été écrit */}
-            <div className="mx-4 mt-4 rounded-(--radius-field) border-l-2 border-brand-300 bg-wash px-3.5 py-3 sm:mx-6">
-              <p className="text-[0.7rem] font-medium uppercase tracking-wide text-faint">
-                {t("understood.yourText")}
-              </p>
-              <p className="mt-1 text-sm font-medium text-ink">{form.title}</p>
-              {form.description !== form.title && (
-                <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted">
-                  {form.description}
-                </p>
-              )}
-            </div>
-
-            <div className="divide-y divide-line px-4 sm:px-6">
-              {/* Kategoria */}
-              <div className="py-4">
-                {!editCategory && selectedCategory ? (
-                  <DetectedRow
-                    icon={<Tag className="size-4.5" aria-hidden />}
-                    label={t("understood.category")}
-                    value={categoryValueLabel}
-                    editLabel={t("understood.edit")}
-                    onEdit={() => setEditCategory(true)}
-                  />
-                ) : (
-                  <div className="flex flex-col gap-4 sm:flex-row">
-                    <div className="flex flex-1 flex-col gap-1.5">
-                      <label htmlFor="publiko-category" className="text-sm font-medium text-ink">
-                        {t("understood.category")}
-                      </label>
-                      <SelectShell>
-                        <select
-                          id="publiko-category"
-                          className={selectClasses}
-                          value={form.categorySlug}
-                          onChange={(e) => patch({ categorySlug: e.target.value, subSlug: "" })}
-                        >
-                          <option value="">{t("understood.missingCategory")}</option>
-                          {categoryOptions.map((category) => (
-                            <option key={category.slug} value={category.slug}>
-                              {localized(category.name, locale)}
-                            </option>
-                          ))}
-                        </select>
-                      </SelectShell>
-                    </div>
-                    {selectedCategory && selectedCategory.children.length > 0 && (
-                      <div className="flex flex-1 flex-col gap-1.5">
-                        <label htmlFor="publiko-sub" className="text-sm font-medium text-ink">
-                          {t("fields.subcategory")}
-                        </label>
-                        <SelectShell>
-                          <select
-                            id="publiko-sub"
-                            className={selectClasses}
-                            value={form.subSlug}
-                            onChange={(e) => patch({ subSlug: e.target.value })}
-                          >
-                            <option value="">{localized(selectedCategory.name, locale)}</option>
-                            {selectedCategory.children.map((sub) => (
-                              <option key={sub.slug} value={sub.slug}>
-                                {localized(sub.name, locale)}
-                              </option>
-                            ))}
-                          </select>
-                        </SelectShell>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Qyteti */}
-              <div className="py-4">
-                {!editCity && form.citySlug ? (
-                  <DetectedRow
-                    icon={<MapPin className="size-4.5" aria-hidden />}
-                    label={t("understood.city")}
-                    value={cityName(form.citySlug, locale)}
-                    editLabel={t("understood.edit")}
-                    onEdit={() => setEditCity(true)}
-                  />
-                ) : (
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor="publiko-city" className="text-sm font-medium text-ink">
-                      {t("understood.city")}
-                    </label>
-                    <SelectShell>
-                      <select
-                        id="publiko-city"
-                        className={selectClasses}
-                        value={form.citySlug}
-                        onChange={(e) => patch({ citySlug: e.target.value })}
-                      >
-                        <option value="">{t("understood.missingCity")}</option>
-                        {cities.map((city) => (
-                          <option key={city.slug} value={city.slug}>
-                            {localized(city.name, locale)}
-                          </option>
-                        ))}
-                      </select>
-                    </SelectShell>
-                  </div>
-                )}
-              </div>
-
-              {/* Data + fleksibilitet */}
-              <div className="py-4">
-                <label htmlFor="publiko-date" className="flex items-center gap-2 text-sm font-medium text-ink">
-                  <CalendarDays className="size-4 text-brand-500" aria-hidden />
-                  {t("fields.date")}
-                </label>
-                <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
-                  <Input
-                    id="publiko-date"
-                    type="date"
-                    value={form.date}
-                    min={todayIso}
-                    disabled={form.flexible}
-                    onChange={(e) => patch({ date: e.target.value })}
-                    className="disabled:opacity-60 sm:max-w-52"
-                  />
-                  <label
+            {dateChoice === "exact" && (
+              <Field label={t("date.pickDate")} htmlFor="pub-date">
+                <Input
+                  id="pub-date"
+                  type="date"
+                  value={exactDate}
+                  onChange={(e) => setExactDate(e.target.value)}
+                />
+              </Field>
+            )}
+            <div className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium">{t("date.timeLabel")}</span>
+              <div className="grid grid-cols-3 gap-2" role="group" aria-label={t("date.timeLabel")}>
+                {["morning", "afternoon", "evening"].map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    aria-pressed={timeChoice === key}
+                    onClick={() => setTimeChoice((prev) => (prev === key ? "" : key))}
                     className={cn(
-                      "inline-flex h-11 cursor-pointer items-center gap-2 rounded-(--radius-field) border px-3.5 text-sm font-medium transition-colors",
-                      form.flexible
+                      "h-11 rounded-(--radius-field) border text-sm font-medium transition-colors",
+                      timeChoice === key
                         ? "border-brand-400 bg-brand-50 text-brand-700"
-                        : "border-line text-muted hover:border-brand-300"
+                        : "border-line bg-card text-muted hover:border-brand-200"
                     )}
                   >
-                    <input
-                      type="checkbox"
-                      className="size-4 accent-brand-600"
-                      checked={form.flexible}
-                      onChange={(e) => patch({ flexible: e.target.checked })}
-                    />
-                    {t("fields.dateFlexible")}
-                  </label>
-                </div>
-              </div>
-
-              {/* Urgjenca */}
-              <div className="flex items-center justify-between gap-4 py-4">
-                <div className="flex min-w-0 items-center gap-3">
-                  <RowIcon>
-                    <Zap className="size-4.5" aria-hidden />
-                  </RowIcon>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-ink">{t("fields.urgent")}</p>
-                    <p className="mt-0.5 text-xs leading-relaxed text-muted">
-                      {t("fields.urgentHint")}
-                    </p>
-                  </div>
-                </div>
-                <Switch
-                  checked={form.urgent}
-                  onChange={(urgent) => patch({ urgent })}
-                  label={t("fields.urgent")}
-                />
-              </div>
-
-              {/* Buxheti */}
-              <div className="py-4">
-                <p className="flex items-center gap-2 text-sm font-medium text-ink">
-                  <Wallet className="size-4 text-brand-500" aria-hidden />
-                  {t("fields.budgetLabel")}
-                </p>
-                <div className="mt-2 grid grid-cols-2 gap-3 sm:max-w-sm">
-                  <div className="flex flex-col gap-1">
-                    <label htmlFor="publiko-budget-min" className="text-xs text-muted">
-                      {t("fields.budgetMin")}
-                    </label>
-                    <Input
-                      id="publiko-budget-min"
-                      type="number"
-                      inputMode="numeric"
-                      min={0}
-                      value={form.budgetMin}
-                      onChange={(e) => patch({ budgetMin: e.target.value })}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <label htmlFor="publiko-budget-max" className="text-xs text-muted">
-                      {t("fields.budgetMax")}
-                    </label>
-                    <Input
-                      id="publiko-budget-max"
-                      type="number"
-                      inputMode="numeric"
-                      min={0}
-                      value={form.budgetMax}
-                      onChange={(e) => patch({ budgetMax: e.target.value })}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Dukshmëria */}
-              <div className="py-4">
-                <p className="flex items-center gap-2 text-sm font-medium text-ink">
-                  <Eye className="size-4 text-brand-500" aria-hidden />
-                  {t("fields.visibility")}
-                </p>
-                <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                  {(
-                    [
-                      { value: "public", title: t("fields.visibilityPublic"), hint: t("fields.visibilityPublicHint") },
-                      { value: "private", title: t("fields.visibilityPrivate"), hint: t("fields.visibilityPrivateHint") }
-                    ] as const
-                  ).map((option) => (
-                    <label
-                      key={option.value}
-                      className={cn(
-                        "flex cursor-pointer items-start gap-3 rounded-(--radius-field) border p-3.5 transition-colors",
-                        form.visibility === option.value
-                          ? "border-brand-400 bg-brand-50/60 ring-2 ring-brand-100"
-                          : "border-line hover:border-brand-300"
-                      )}
-                    >
-                      <input
-                        type="radio"
-                        name="publiko-visibility"
-                        value={option.value}
-                        checked={form.visibility === option.value}
-                        onChange={() => patch({ visibility: option.value })}
-                        className="mt-0.5 size-4 accent-brand-600"
-                      />
-                      <span className="min-w-0">
-                        <span className="block text-sm font-medium text-ink">{option.title}</span>
-                        <span className="mt-0.5 block text-xs leading-relaxed text-muted">
-                          {option.hint}
-                        </span>
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Fotot — aperçu local uniquement, rien n'est envoyé */}
-              <div className="py-4">
-                <p className="flex items-center gap-2 text-sm font-medium text-ink">
-                  <Camera className="size-4 text-brand-500" aria-hidden />
-                  {t("fields.photos")}
-                </p>
-                <div className="mt-2.5 flex flex-wrap gap-3">
-                  {photos.map((photo) => (
-                    <div
-                      key={photo.id}
-                      className="relative size-20 overflow-hidden rounded-(--radius-field) border border-line bg-wash"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element -- aperçu blob local */}
-                      <img src={photo.url} alt={photo.name} className="size-full object-cover" />
-                      <button
-                        type="button"
-                        aria-label={t("fields.removePhoto")}
-                        onClick={() => removePhoto(photo.id)}
-                        className="absolute right-1 top-1 inline-flex size-6 items-center justify-center rounded-full bg-ink/70 text-white transition-colors hover:bg-ink"
-                      >
-                        <X className="size-3.5" aria-hidden />
-                      </button>
-                    </div>
-                  ))}
-                  {photos.length < MAX_PHOTOS && (
-                    <label className="flex size-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-(--radius-field) border border-dashed border-line text-muted transition-colors hover:border-brand-300 hover:bg-brand-50/40 hover:text-brand-600">
-                      <ImagePlus className="size-5" aria-hidden />
-                      <span className="text-[0.65rem] font-medium">{t("fields.addPhotos")}</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        className="sr-only"
-                        onChange={onPhotosSelected}
-                      />
-                    </label>
-                  )}
-                </div>
-                <p className="mt-2 text-xs text-muted">{t("fields.photosHint")}</p>
+                    {t(`date.${key}` as never)}
+                  </button>
+                ))}
               </div>
             </div>
-          </Card>
+          </div>
+        )}
 
-          {/* Validation douce + actions */}
-          <div className="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <Button variant="ghost" onClick={() => setStep("describe")} className="sm:self-center">
+        {/* ÉTAPE 4 — Buxheti (écran 012, jamais bloquant) */}
+        {step === 3 && (
+          <div className="flex flex-col gap-5">
+            <div>
+              <div className="flex items-center gap-2">
+                <Wallet className="size-5 text-brand-600" aria-hidden />
+                <h2 className="font-display text-xl font-bold">{t("budget.title")}</h2>
+              </div>
+              <p className="mt-1 text-sm text-muted">{t("budget.subtitle")}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3" role="group" aria-label={t("budget.title")}>
+              {BUDGETS.map(({ key }) => (
+                <button
+                  key={key}
+                  type="button"
+                  aria-pressed={budgetChoice === key}
+                  onClick={() => setBudgetChoice(key)}
+                  className={cn(
+                    "h-11 rounded-(--radius-field) border text-sm font-medium transition-colors",
+                    budgetChoice === key
+                      ? "border-brand-400 bg-brand-50 text-brand-700"
+                      : "border-line bg-card text-muted hover:border-brand-200"
+                  )}
+                >
+                  {t(`budget.${BUDGET_LABEL_KEY[key]}` as never)}
+                </button>
+              ))}
+            </div>
+            {budgetChoice === "custom" && (
+              <div className="grid grid-cols-2 gap-3">
+                <Field label={t("budget.min")} htmlFor="pub-bmin">
+                  <Input
+                    id="pub-bmin"
+                    type="number"
+                    inputMode="numeric"
+                    min={0}
+                    value={budgetMin}
+                    onChange={(e) => setBudgetMin(e.target.value)}
+                  />
+                </Field>
+                <Field label={t("budget.max")} htmlFor="pub-bmax">
+                  <Input
+                    id="pub-bmax"
+                    type="number"
+                    inputMode="numeric"
+                    min={0}
+                    value={budgetMax}
+                    onChange={(e) => setBudgetMax(e.target.value)}
+                  />
+                </Field>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ÉTAPE 5 — Fotot (écran 013) */}
+        {step === 4 && (
+          <div className="flex flex-col gap-5">
+            <div>
+              <div className="flex items-center gap-2">
+                <Camera className="size-5 text-brand-600" aria-hidden />
+                <h2 className="font-display text-xl font-bold">{t("photos.title")}</h2>
+              </div>
+              <p className="mt-1 text-sm text-muted">{t("photos.subtitle")}</p>
+            </div>
+            <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+              {photos.map((url, i) => (
+                <div key={url} className="group relative aspect-square overflow-hidden rounded-(--radius-field) border border-line bg-wash">
+                  {/* Aperçu local uniquement (URL objet) — jamais envoyé (version demo) */}
+                  <img src={url} alt="" className="h-full w-full object-cover" />
+                  <button
+                    type="button"
+                    aria-label={`${t("photos.remove")} ${i + 1}`}
+                    onClick={() => {
+                      URL.revokeObjectURL(url);
+                      setPhotos((prev) => prev.filter((p) => p !== url));
+                    }}
+                    className="absolute right-1 top-1 inline-flex size-6 items-center justify-center rounded-full bg-ink/70 text-white opacity-90 transition-opacity hover:opacity-100"
+                  >
+                    <X className="size-3.5" aria-hidden />
+                  </button>
+                </div>
+              ))}
+              {photos.length < 10 && (
+                <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-(--radius-field) border-2 border-dashed border-line text-muted transition-colors hover:border-brand-300 hover:text-brand-700">
+                  <Plus className="size-6" aria-hidden />
+                  <span className="text-xs font-medium">{t("photos.add")}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="sr-only"
+                    onChange={(e) => {
+                      addPhotos(e.target.files);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+              )}
+            </div>
+            <p className="text-xs text-faint">{t("photos.hint")}</p>
+          </div>
+        )}
+
+        {/* ÉTAPE 6 — Përmbledhja (écran 014) */}
+        {step === 5 && (
+          <div className="flex flex-col gap-5">
+            <div>
+              <h2 className="font-display text-xl font-bold">{t("summary.title")}</h2>
+              <p className="mt-1 text-sm text-muted">{t("summary.subtitle")}</p>
+            </div>
+            <div className="rounded-(--radius-field) bg-wash p-4">
+              <p className="text-xs font-medium uppercase tracking-wide text-faint">{t("summary.request")}</p>
+              <p className="mt-1.5 font-display text-lg font-semibold">{parsed?.title || text.trim().slice(0, 70)}</p>
+              <p className="mt-1 line-clamp-3 text-sm text-muted">{text}</p>
+            </div>
+            <ul className="flex flex-col divide-y divide-line rounded-(--radius-field) border border-line">
+              {[
+                {
+                  icon: category ? (
+                    <CategoryIcon name={category.icon} className="size-4 text-brand-600" />
+                  ) : (
+                    <Sparkles className="size-4 text-brand-600" aria-hidden />
+                  ),
+                  label: t("understood.category"),
+                  value: category
+                    ? `${localized(category.name, locale)}${
+                        subSlug
+                          ? ` · ${localized(category.children.find((s) => s.slug === subSlug)?.name ?? { sq: "", en: "" }, locale)}`
+                          : ""
+                      }`
+                    : "—",
+                  goTo: 1
+                },
+                {
+                  icon: <MapPin className="size-4 text-brand-600" aria-hidden />,
+                  label: t("understood.city"),
+                  value: citySlug ? cityName(citySlug, locale) : "—",
+                  goTo: 1
+                },
+                {
+                  icon: <Calendar className="size-4 text-brand-600" aria-hidden />,
+                  label: t("understood.date"),
+                  value: dateLabel(),
+                  goTo: 2
+                },
+                {
+                  icon: <Coins className="size-4 text-brand-600" aria-hidden />,
+                  label: t("understood.budget"),
+                  value: budgetLabel(),
+                  goTo: 3
+                },
+                {
+                  icon: <Camera className="size-4 text-brand-600" aria-hidden />,
+                  label: t("photos.title"),
+                  value: t("photos.count", { count: photos.length }),
+                  goTo: 4
+                }
+              ].map((row) => (
+                <li key={row.label} className="flex items-center gap-3 px-4 py-3">
+                  {row.icon}
+                  <span className="w-24 shrink-0 text-xs font-medium uppercase tracking-wide text-faint">
+                    {row.label}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium">{row.value}</span>
+                  <button
+                    type="button"
+                    aria-label={`${t("understood.edit")} — ${row.label}`}
+                    onClick={() => setStep(row.goTo)}
+                    className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg text-faint transition-colors hover:bg-wash hover:text-brand-700"
+                  >
+                    <Pencil className="size-4" aria-hidden />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {urgent && (
+              <Badge tone="danger" className="self-start">
+                <Zap className="size-3" aria-hidden />
+                {t("understood.urgentYes")}
+              </Badge>
+            )}
+          </div>
+        )}
+
+        {/* Navigation */}
+        <div className="mt-7 flex items-center justify-between gap-3 border-t border-line pt-5">
+          {step > 0 ? (
+            <Button variant="ghost" onClick={() => setStep((s) => s - 1)}>
               <ArrowLeft className="size-4" aria-hidden />
               {tc("actions.back")}
             </Button>
-            <div className="flex flex-col gap-2 sm:items-end">
-              {!canPublish && (
-                <p className="text-xs font-medium text-warning">
-                  {[
-                    !form.categorySlug ? t("understood.missingCategory") : null,
-                    !form.citySlug ? t("understood.missingCity") : null
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </p>
-              )}
-              <Button size="lg" onClick={publish} disabled={!canPublish || publishing}>
-                {publishing ? (
-                  <Loader2 className="size-5 animate-spin" aria-hidden />
-                ) : (
-                  <Send className="size-5" aria-hidden />
-                )}
-                {t("submit")}
-              </Button>
-            </div>
-          </div>
+          ) : (
+            <span />
+          )}
+          {step === 0 && (
+            <Button onClick={analyze} disabled={!canContinue}>
+              {tc("actions.continue")}
+              <ArrowRight className="size-4" aria-hidden />
+            </Button>
+          )}
+          {step > 0 && step < STEPS.length - 1 && (
+            <Button onClick={() => setStep((s) => s + 1)} disabled={!canContinue}>
+              {tc("actions.continue")}
+              <ArrowRight className="size-4" aria-hidden />
+            </Button>
+          )}
+          {step === STEPS.length - 1 && (
+            <Button size="lg" onClick={publish}>
+              {t("submit")}
+              <ArrowRight className="size-5" aria-hidden />
+            </Button>
+          )}
         </div>
-      )}
-
-      {/* ÉTAPE 3 — Sukses (simulation, rien n'est enregistré) */}
-      {step === "success" && (
-        <Card className="animate-fade-up mt-8 overflow-hidden">
-          <div className="relative overflow-hidden bg-hero-wash px-6 py-12 text-center">
-            <div className="bg-grid absolute inset-0 opacity-60" aria-hidden />
-            <div className="relative flex flex-col items-center gap-4">
-              <span className="relative inline-flex size-20 items-center justify-center">
-                <span className="animate-float absolute inset-0 rounded-full bg-success-soft" aria-hidden />
-                <span className="absolute inset-2 rounded-full bg-success/15" aria-hidden />
-                <CheckCircle2 className="relative size-10 text-success" aria-hidden />
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-success-soft px-3 py-1 text-xs font-semibold text-success">
-                <Check className="size-3.5" aria-hidden />
-                {t("success.badge")}
-              </span>
-              <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("success.title")}</h2>
-              <p className="max-w-md text-sm leading-relaxed text-muted">{t("success.text")}</p>
-            </div>
-          </div>
-
-          <div className="px-6 py-8">
-            {/* Çfarë ndodh tani */}
-            <div className="mx-auto max-w-md rounded-(--radius-card) border border-line bg-paper p-5">
-              <p className="text-sm font-semibold text-ink">{t("success.nextTitle")}</p>
-              <ul className="mt-3 flex flex-col gap-3">
-                {[
-                  { icon: <Bell className="size-4" aria-hidden />, text: t("success.next1") },
-                  { icon: <MessagesSquare className="size-4" aria-hidden />, text: t("success.next2") },
-                  { icon: <BadgeCheck className="size-4" aria-hidden />, text: t("success.next3") }
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                      {item.icon}
-                    </span>
-                    <span className="text-sm text-muted">{item.text}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-              <Button as={Link} href="/kerkesa/kerkesa-hidraulik-prishtine" size="lg">
-                {t("success.viewRequest")}
-                <ArrowRight className="size-5" aria-hidden />
-              </Button>
-              <Button as={Link} href="/" variant="outline" size="lg">
-                {t("success.backHome")}
-              </Button>
-            </div>
-            <p className="mt-5 text-center text-xs text-faint">{t("success.demoNote")}</p>
-          </div>
-        </Card>
-      )}
+      </Card>
     </div>
   );
 }

@@ -13,7 +13,8 @@ export function cityName(slug: string, locale: string): string {
 
 export function formatAgo(hoursAgo: number, locale: string): string {
   const rtf = new Intl.RelativeTimeFormat(locale === "en" ? "en" : "sq", { numeric: "auto" });
-  if (hoursAgo < 24) return rtf.format(-Math.max(1, Math.round(hoursAgo)), "hour");
+  if (hoursAgo < 1) return rtf.format(-Math.max(1, Math.round(hoursAgo * 60)), "minute");
+  if (hoursAgo < 24) return rtf.format(-Math.round(hoursAgo), "hour");
   return rtf.format(-Math.round(hoursAgo / 24), "day");
 }
 

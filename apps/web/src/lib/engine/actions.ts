@@ -162,3 +162,12 @@ export function markAllNotificationsRead() {
 export function proById(proId: string) {
   return demoPros.find((p) => p.id === proId);
 }
+
+export function markNotificationRead(notificationId: string) {
+  update((prev) => ({
+    ...prev,
+    notifications: prev.notifications.map((n) =>
+      n.id === notificationId ? { ...n, read: true } : n
+    )
+  }));
+}
